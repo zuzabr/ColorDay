@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -31,11 +32,15 @@ AColorDayCharacter::AColorDayCharacter()
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
 	Mesh1P->SetOnlyOwnerSee(true);
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
-	Mesh1P->bCastDynamicShadow = false;
-	Mesh1P->CastShadow = false;
+	Mesh1P->bCastDynamicShadow = true;
+	Mesh1P->CastShadow = true;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	SetDefaulSpeed();
+
 }
+
+
 
 //////////////////////////////////////////////////////////////////////////// Input
 
@@ -67,11 +72,37 @@ void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AColorDayCharacter::Look);
+
+		// Crouching
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AColorDayCharacter::CrouchToggle);
+
+		// Sprinting
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AColorDayCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
 	}
 	else
 	{
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+bool AColorDayCharacter::CanSprint()
+{
+	if (bCanSprint && !bIsCrouched) 
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void AColorDayCharacter::SetDefaulSpeed()
+{
+	if (!GetCharacterMovement()) return;
+	GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
+	
 }
 
 
@@ -99,4 +130,33 @@ void AColorDayCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AColorDayCharacter::CrouchToggle(const FInputActionValue& Value)
+{
+	if (!bIsCrouched)
+	{
+		UE_LOG(LogTemplateCharacter, Warning, TEXT("Crouching"));
+		StopSprint(Value);
+		Crouch();
+	}
+	else
+	{
+		UnCrouch();
+	}
+	
+}
+
+void AColorDayCharacter::Sprint(const FInputActionValue& Value)
+{
+	if (CanSprint() && GetCharacterMovement())
+	{
+		UE_LOG(LogTemplateCharacter, Warning, TEXT("Sprinting"));
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+}
+
+void AColorDayCharacter::StopSprint(const FInputActionValue& Value)
+{
+	SetDefaulSpeed();
 }

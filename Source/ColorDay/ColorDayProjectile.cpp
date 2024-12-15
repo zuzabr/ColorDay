@@ -3,6 +3,10 @@
 #include "ColorDayProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
+#include "Components/DecalComponent.h"
 
 AColorDayProjectile::AColorDayProjectile() 
 {
@@ -33,11 +37,37 @@ AColorDayProjectile::AColorDayProjectile()
 
 void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	if (PaintSplatterEffect && GetWorld())
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			GetWorld(),
+			PaintSplatterEffect,
+			Hit.ImpactPoint,
+			Hit.ImpactNormal.Rotation()
+		);
+	}
+
+	if (PaintDecalMaterial && GetWorld())
+	{
+		UDecalComponent* Decal = UGameplayStatics::SpawnDecalAtLocation(
+			GetWorld(),
+			PaintDecalMaterial,
+			DecalSize,
+			Hit.ImpactPoint,
+			Hit.ImpactNormal.Rotation()
+		);
+		if (Decal)
+		{
+			Decal->SetLifeSpan(10.f); // Optional: Set decal lifetime
+		}
+	}
+
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		Destroy();
 	}
+
+	Destroy();
 }
