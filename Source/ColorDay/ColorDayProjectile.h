@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ColorDayCoreTypes.h"
 #include "ColorDayProjectile.generated.h"
 
 class USphereComponent;
@@ -24,17 +25,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
-	// Niagara System for paint splatter
-	UPROPERTY(EditAnywhere, Category = "Effects")
-	UNiagaraSystem* PaintSplatterEffect;
-
-	// Material for paint decal
-	UPROPERTY(EditAnywhere, Category = "Effects")
-	UMaterialInterface* PaintDecalMaterial;
-
-	// Size of the decal
-	UPROPERTY(EditAnywhere, Category = "Effects")
-	FVector DecalSize = FVector(50.f, 100.f, 100.f);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileInfo)
+	FProjectileInfo ProjectileInfo;
 
 public:
 	AColorDayProjectile();
@@ -47,6 +39,9 @@ public:
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+
+	void SpawnColorActor(const FHitResult& Hit);
 
 
 };

@@ -13,6 +13,16 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 
+
+
+void UColorDayWeaponComponent::SwitchAmmoType()
+{
+	if (AmmoTypes.Num() == 0) return;
+		
+	CurrentAmmoIndex = (CurrentAmmoIndex + 1) % AmmoTypes.Num();
+	
+}
+
 // Sets default values for this component's properties
 UColorDayWeaponComponent::UColorDayWeaponComponent()
 {
@@ -23,45 +33,45 @@ UColorDayWeaponComponent::UColorDayWeaponComponent()
 
 void UColorDayWeaponComponent::Fire()
 {
-	if (Character == nullptr || Character->GetController() == nullptr)
-	{
-		return;
-	}
-
+	if (!Character|| Character->GetController() == nullptr) return;
+	
+	const FAmmoType& CurrentAmmo = AmmoTypes[CurrentAmmoIndex];
+	const auto CurAmmoClass = CurrentAmmo.ProjectileClass;
+	
 	// Try and fire a projectile
-	if (ProjectileClass != nullptr)
-	{
-		UWorld* const World = GetWorld();
-		if (World != nullptr)
-		{
-			APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
-			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-			const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
+	if (!CurAmmoClass||!GetWorld()) return;
+	UWorld* const World = GetWorld();
+		
+	if (!World) return;
+		
+	APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
+	const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
+	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+	const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
 	
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	//Set Spawn Collision Handling Override
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
-			// Spawn the projectile at the muzzle
-			World->SpawnActor<AColorDayProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-		}
-	}
-	
+	// Spawn the projectile at the muzzle
+	World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+		
 	// Try and play the sound if specified
-	if (FireSound != nullptr)
+	const auto CurFireSound = CurrentAmmo.FireSound;	
+	if (CurFireSound != nullptr)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
+		UGameplayStatics::PlaySoundAtLocation(this, CurFireSound, Character->GetActorLocation());
 	}
 	
 	// Try and play a firing animation if specified
-	if (FireAnimation != nullptr)
+	const auto CurFireAnim = CurrentAmmo.FireAnimation;
+	if (CurFireAnim != nullptr)
 	{
 		// Get the animation object for the arms mesh
 		UAnimInstance* AnimInstance = Character->GetMesh1P()->GetAnimInstance();
 		if (AnimInstance != nullptr)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			AnimInstance->Montage_Play(CurFireAnim, 1.f);
 		}
 	}
 }
@@ -93,6 +103,7 @@ bool UColorDayWeaponComponent::AttachWeapon(AColorDayCharacter* TargetCharacter)
 		{
 			// Fire
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UColorDayWeaponComponent::Fire);
+			EnhancedInputComponent->BindAction(SwitchAmmoAction, ETriggerEvent::Triggered, this, &UColorDayWeaponComponent::SwitchAmmoType);
 		}
 	}
 
