@@ -8,7 +8,12 @@ public class ColorDay : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Niagara" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core",
+            "CoreUObject", "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "Niagara",
+        "GameplayTags"});
 
         PublicIncludePaths.AddRange(new string[]
         {

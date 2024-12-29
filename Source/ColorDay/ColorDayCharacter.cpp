@@ -7,10 +7,14 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
+#include "DataAssets/Input/DataAsset_InputConfig.h"
+#include "Components/Input/ColorDayInputComponent.h"
+#include "ColorDayGameplayTags.h"
+
+#include "ColorDayDebugHelper.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -53,7 +57,8 @@ void AColorDayCharacter::NotifyControllerChanged()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			checkf(InputConfigDataAsset, TEXT("Input config isn't assigned"));
+			Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 		}
 	}
 }
@@ -61,29 +66,24 @@ void AColorDayCharacter::NotifyControllerChanged()
 void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {	
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+	UColorDayInputComponent* ColorDayInputComponent = CastChecked<UColorDayInputComponent>(PlayerInputComponent);
+	checkf(InputConfigDataAsset, TEXT("Input config isn't assigned"));
 
-		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AColorDayCharacter::Move);
+	// Move and Look
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &AColorDayCharacter::Move);
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &AColorDayCharacter::Look);
 
-		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AColorDayCharacter::Look);
-
-		// Crouching
-		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AColorDayCharacter::CrouchToggle);
-
-		// Sprinting
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AColorDayCharacter::Sprint);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
-	}
-	else
-	{
-		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
+	// Jumping
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ACharacter::Jump);
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Jump, ETriggerEvent::Completed, this, & ACharacter::StopJumping);
+	
+	// Crouching
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Crouch, ETriggerEvent::Started, this, &AColorDayCharacter::CrouchToggle);
+	
+	// Sprinting
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &AColorDayCharacter::Sprint);
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
+			
 }
 
 bool AColorDayCharacter::CanSprint()
