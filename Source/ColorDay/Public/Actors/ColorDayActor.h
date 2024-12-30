@@ -4,15 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ColorActor.generated.h"
+#include "ColorDayActor.generated.h"
 
 UCLASS()
-class COLORDAY_API AColorActor : public AActor
+class COLORDAY_API AColorDayActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AColorActor();
+	AColorDayActor();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+
 
 };

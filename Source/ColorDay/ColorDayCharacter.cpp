@@ -12,7 +12,11 @@
 #include "Engine/LocalPlayer.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/ColorDayInputComponent.h"
+
 #include "ColorDayGameplayTags.h"
+#include "AbilitySystem/ColorDayAbilitySystemComp.h"
+#include "AbilitySystem/ColorDayAttributeSet.h"
+#include "AbilitySystem/DA_StartupHeroAbilities.h"
 
 #include "ColorDayDebugHelper.h"
 
@@ -39,6 +43,10 @@ AColorDayCharacter::AColorDayCharacter()
 	Mesh1P->bCastDynamicShadow = true;
 	Mesh1P->CastShadow = true;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+
+	// Create Ability System
+	ColorDayAbilitySystemComp = CreateDefaultSubobject<UColorDayAbilitySystemComp>(TEXT("ColorDayAbilitySystemComp"));
+	ColorDayAttributeSet = CreateDefaultSubobject<UColorDayAttributeSet>(TEXT("ColorDayAttributeSet"));
 
 	SetDefaulSpeed();
 
@@ -86,6 +94,27 @@ void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 			
 }
 
+void AColorDayCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (ColorDayAbilitySystemComp)
+	{
+		ColorDayAbilitySystemComp->InitAbilityActorInfo(this, this);
+		Debug::Print(TEXT("Ability System Component Valid"));
+	}
+
+	//ensure(!StartupAbilities.IsNull());
+
+	if (!StartupAbilities.IsNull())
+	{
+		if (auto* LoadedData = StartupAbilities.LoadSynchronous()) 
+		{
+			LoadedData->GiveToAbilitySystemComponent(ColorDayAbilitySystemComp);
+		}
+	}
+}
+
 bool AColorDayCharacter::CanSprint()
 {
 	if (bCanSprint && !bIsCrouched) 
@@ -105,6 +134,11 @@ void AColorDayCharacter::SetDefaulSpeed()
 	
 }
 
+
+UAbilitySystemComponent* AColorDayCharacter::GetAbilitySystemComponent() const
+{
+	return GetColorDayAbilitySystemComp();
+}
 
 void AColorDayCharacter::Move(const FInputActionValue& Value)
 {

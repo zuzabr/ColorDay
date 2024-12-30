@@ -13,7 +13,8 @@ public class ColorDay : ModuleRules
             "InputCore",
             "EnhancedInput",
             "Niagara",
-        "GameplayTags"});
+        "GameplayTags",
+        "GameplayTasks"});
 
         PublicIncludePaths.AddRange(new string[]
         {

@@ -7,7 +7,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Components/DecalComponent.h"
-#include "Weapon/ColorActor.h"
+#include "Actors/ColorDayActor.h"
 
 AColorDayProjectile::AColorDayProjectile() 
 {
@@ -94,5 +94,6 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 
-	GetWorld()->SpawnActor<AColorActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);
+	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);
+	
 }

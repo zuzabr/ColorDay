@@ -7,7 +7,7 @@
 
 class AColorDayProjectile;
 class UNiagaraSystem;
-class AColorActor;
+class AColorDayActor;
 
 USTRUCT(BlueprintType)
 struct FAmmoType
@@ -57,6 +57,6 @@ struct FProjectileInfo
 	FVector DecalSize = FVector(40.f, 40.f, 40.f);
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<AColorActor> ActorToSpawn;
+	TSubclassOf<AColorDayActor> ActorToSpawn;
 
 };

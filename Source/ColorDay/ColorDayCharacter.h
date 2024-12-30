@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "AbilitySystemInterface.h"
 #include "ColorDayCharacter.generated.h"
 
 class UInputComponent;
@@ -13,12 +14,17 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UDataAsset_InputConfig;
+class UColorDayAbilitySystemComp;
+class UColorDayAttributeSet;
+class UDA_StartupHeroAbilities;
+
 struct FInputActionValue;
+
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AColorDayCharacter : public ACharacter
+class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -46,6 +52,10 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
+	FORCEINLINE UColorDayAbilitySystemComp* GetColorDayAbilitySystemComp() const {return ColorDayAbilitySystemComp;}
+	FORCEINLINE UColorDayAttributeSet* GetColorDayAttributeSet() const { return ColorDayAttributeSet; }
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
 	/** Called for movement input */
@@ -63,8 +73,18 @@ protected:
 	// APawn interface
 	virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	virtual void PossessedBy(AController* NewController) override;
 	// End of APawn interface
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	UColorDayAbilitySystemComp* ColorDayAbilitySystemComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	UColorDayAttributeSet* ColorDayAttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilitySystem")
+	TSoftObjectPtr<UDA_StartupHeroAbilities> StartupAbilities;
+		
 
 
 private:
