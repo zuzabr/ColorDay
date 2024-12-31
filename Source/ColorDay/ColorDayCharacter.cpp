@@ -18,6 +18,8 @@
 #include "AbilitySystem/ColorDayAttributeSet.h"
 #include "AbilitySystem/DA_StartupHeroAbilities.h"
 
+#include "Components/CombatComponent.h"
+
 #include "ColorDayDebugHelper.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -47,6 +49,9 @@ AColorDayCharacter::AColorDayCharacter()
 	// Create Ability System
 	ColorDayAbilitySystemComp = CreateDefaultSubobject<UColorDayAbilitySystemComp>(TEXT("ColorDayAbilitySystemComp"));
 	ColorDayAttributeSet = CreateDefaultSubobject<UColorDayAttributeSet>(TEXT("ColorDayAttributeSet"));
+
+	// Create Combat Component
+	CombatComponent = CreateDefaultSubobject< UCombatComponent>(TEXT("CombatComponent"));
 
 	SetDefaulSpeed();
 

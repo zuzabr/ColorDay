@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/ColorDayGameplayAbility.h"
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
+#include "Components/CombatComponent.h"
 
 void UColorDayGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -25,4 +26,9 @@ void UColorDayGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handl
 	{
 		ActorInfo->AbilitySystemComponent->ClearAbility(Handle);
 	}
+}
+
+UCombatComponent* UColorDayGameplayAbility::GetCombatComponent() const
+{
+	return GetAvatarActorFromActorInfo()->FindComponentByClass<UCombatComponent>();
 }

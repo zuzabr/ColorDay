@@ -31,6 +31,8 @@ UColorDayWeaponComponent::UColorDayWeaponComponent()
 }
 
 
+
+
 void UColorDayWeaponComponent::Fire()
 {
 	if (!Character|| Character->GetController() == nullptr) return;
@@ -90,7 +92,6 @@ bool UColorDayWeaponComponent::AttachWeapon(AColorDayCharacter* TargetCharacter)
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Character->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
 
-	// Set up action bindings
 	if (APlayerController* PlayerController = Cast<APlayerController>(Character->GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -106,6 +107,8 @@ bool UColorDayWeaponComponent::AttachWeapon(AColorDayCharacter* TargetCharacter)
 			EnhancedInputComponent->BindAction(SwitchAmmoAction, ETriggerEvent::Triggered, this, &UColorDayWeaponComponent::SwitchAmmoType);
 		}
 	}
+
+	
 
 	return true;
 }

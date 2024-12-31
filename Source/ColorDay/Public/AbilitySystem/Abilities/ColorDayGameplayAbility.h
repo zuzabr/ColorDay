@@ -6,6 +6,8 @@
 #include "Abilities/GameplayAbility.h"
 #include "ColorDayGameplayAbility.generated.h"
 
+class UCombatComponent;
+
 UENUM(BlueprintType)
 enum class EColorDayAbilityActivationPolicy : uint8
 {
@@ -26,4 +28,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "ColorDayAbility")
 	EColorDayAbilityActivationPolicy AbilityActivationPolicy = EColorDayAbilityActivationPolicy::OnTriggered;
 
+	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
+	UCombatComponent* GetCombatComponent() const;
 };

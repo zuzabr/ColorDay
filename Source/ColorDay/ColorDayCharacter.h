@@ -11,14 +11,17 @@
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
+
 class UInputAction;
 class UInputMappingContext;
 class UDataAsset_InputConfig;
+struct FInputActionValue;
+
 class UColorDayAbilitySystemComp;
 class UColorDayAttributeSet;
 class UDA_StartupHeroAbilities;
 
-struct FInputActionValue;
+class UCombatComponent;
 
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -54,6 +57,7 @@ public:
 	
 	FORCEINLINE UColorDayAbilitySystemComp* GetColorDayAbilitySystemComp() const {return ColorDayAbilitySystemComp;}
 	FORCEINLINE UColorDayAttributeSet* GetColorDayAttributeSet() const { return ColorDayAttributeSet; }
+	FORCEINLINE UCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
@@ -84,12 +88,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilitySystem")
 	TSoftObjectPtr<UDA_StartupHeroAbilities> StartupAbilities;
+
+	
 		
 
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CharacterData, meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
+	UCombatComponent* CombatComponent;
 
 	bool bCanSprint = true;
 	bool bCanCrouch = true;
