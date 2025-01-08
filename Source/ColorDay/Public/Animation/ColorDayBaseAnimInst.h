@@ -19,7 +19,7 @@ public:
 	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 
 protected:
-	UPROPERTY()
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
 	AColorDayCharacter* OwningChar;
 
 	UPROPERTY()

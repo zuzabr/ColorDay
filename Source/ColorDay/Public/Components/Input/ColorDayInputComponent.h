@@ -17,14 +17,30 @@ class COLORDAY_API UColorDayInputComponent : public UEnhancedInputComponent
 public:
 	template<class UserObject, typename CallbackFunc>
 	void BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func);
+
+	template<class UserObject, typename CallbackFunc>
+	void BindWeaponInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc);
 };
 
 template<class UserObject, typename CallbackFunc>
 inline void UColorDayInputComponent::BindNativeInputAction(const UDataAsset_InputConfig* InInputConfig, const FGameplayTag& InTag, ETriggerEvent TriggerEvent, UserObject* ContextObject, CallbackFunc Func)
 {	
 	checkf(InInputConfig, TEXT("Input config Data is null, cannot proceed with binding"));
-	if (auto FoundAction = InInputConfig->FindNativeInputActionByTag(InTag))
+	if (UInputAction* FoundAction = InInputConfig->FindNativeInputActionByTag(InTag))
 	{
 		BindAction(FoundAction, TriggerEvent, ContextObject, Func);
+	}
+}
+
+template<class UserObject, typename CallbackFunc>
+inline void UColorDayInputComponent::BindWeaponInputAction(const UDataAsset_InputConfig* InInputConfig, UserObject* ContextObject, CallbackFunc InputPressedFunc, CallbackFunc InputReleasedFunc)
+{
+	checkf(InInputConfig, TEXT("Input config Data is null, cannot proceed with binding"));
+	for (const FColorDayInputActionConfig& WeaponInputAction : InInputConfig->WeaponInputActions)
+	{
+		if (!WeaponInputAction.IsValid()) continue;
+
+		BindAction(WeaponInputAction.InputAction, ETriggerEvent::Started, ContextObject, InputPressedFunc, WeaponInputAction.InputTag);
+		BindAction(WeaponInputAction.InputAction, ETriggerEvent::Completed, ContextObject, InputReleasedFunc, WeaponInputAction.InputTag);
 	}
 }

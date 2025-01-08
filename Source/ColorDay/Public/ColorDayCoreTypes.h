@@ -2,12 +2,15 @@
 
 #pragma once
 
-
+#include "GameplayTagContainer.h"
 #include "ColorDayCoreTypes.generated.h"
 
 class AColorDayProjectile;
 class UNiagaraSystem;
 class AColorDayActor;
+class UPlayerLinkedAnimLayer;
+class UColorDayGameplayAbility;
+class UInputMappingContext;
 
 USTRUCT(BlueprintType)
 struct FAmmoType
@@ -60,3 +63,34 @@ struct FProjectileInfo
 	TSubclassOf<AColorDayActor> ActorToSpawn;
 
 };
+
+USTRUCT(BlueprintType)
+struct FPlayerAbilitySet
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
+	FGameplayTag InputTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UColorDayGameplayAbility> AbilityToGrant;
+
+	bool IsValid() const;
+
+};
+
+USTRUCT(BlueprintType)
+struct FWeaponData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UPlayerLinkedAnimLayer> WeaponAnimLayerToLink;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputMappingContext* WeaponInputMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty ="InputTag"))
+	TArray<FPlayerAbilitySet> DefaultWeaponAbilities;
+};
+

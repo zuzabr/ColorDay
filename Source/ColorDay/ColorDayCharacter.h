@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 #include "ColorDayCharacter.generated.h"
 
 class UInputComponent;
@@ -32,19 +33,19 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 	GENERATED_BODY()
 
 
-	/** Pawn mesh: 1st person view (arms; seen only by self) */
+	/** Pawn mesh: 1st person view (arms; seen only by self)*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* Mesh1P;
+	USkeletalMeshComponent* Mesh1P; 
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	float DefaultSpeed=600.0f;
+	float DefaultSpeed=400.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	float SprintSpeed = 2000.0f;
+	float SprintSpeed = 1000.0f;
 
 	
 public:
@@ -73,6 +74,10 @@ protected:
 
 	void Sprint(const FInputActionValue& Value);
 	void StopSprint(const FInputActionValue& Value);
+
+	// GAS Iput for abiliities
+	void AbilityInputPressed(FGameplayTag IputTag);
+	void AbilityInputReleased(FGameplayTag IputTag);
 
 	// APawn interface
 	virtual void NotifyControllerChanged() override;

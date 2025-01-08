@@ -7,6 +7,9 @@
 #include "ColorDayGameplayAbility.generated.h"
 
 class UCombatComponent;
+class UColorDayAbilitySystemComp;
+class AColorDayCharacter;
+class AColorDayPlayerController;
 
 UENUM(BlueprintType)
 enum class EColorDayAbilityActivationPolicy : uint8
@@ -19,6 +22,13 @@ UCLASS()
 class COLORDAY_API UColorDayGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
+	AColorDayCharacter* GetColorDayCharacter();
+
+	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
+	AColorDayPlayerController* GetColorController();
 	
 protected:
 
@@ -30,4 +40,11 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
 	UCombatComponent* GetCombatComponent() const;
+
+	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
+	UColorDayAbilitySystemComp* GetColorColorDayAbilitySystemComp()const;
+
+private:
+	TWeakObjectPtr<AColorDayCharacter> CachedCharacter;
+	TWeakObjectPtr<AColorDayPlayerController> CachedController;
 };

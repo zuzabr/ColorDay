@@ -4,10 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "ColorDayCoreTypes.h"
 #include "DA_StartupHeroAbilities.generated.h"
 
 class UColorDayGameplayAbility;
 class UColorDayAbilitySystemComp;
+
+
 
 UCLASS()
 class COLORDAY_API UDA_StartupHeroAbilities : public UDataAsset
@@ -25,4 +28,8 @@ protected:
 	TArray<TSubclassOf<UColorDayGameplayAbility>> ReactiveAbilities;
 
 	void GrantAbilities(const TArray<TSubclassOf<UColorDayGameplayAbility>>& AbilitiesToGive, UColorDayAbilitySystemComp* InASC, int32 ApplyLevel = 1);
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TArray<FPlayerAbilitySet> PlayerStartAbilitySets;
 };

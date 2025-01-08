@@ -18,4 +18,5 @@ void UColorDayBaseAnimInst::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 
 	GroundSpeed = OwningChar->GetVelocity().Size2D();
 	bHasAcceleration = OwningMovementComp->GetCurrentAcceleration().SizeSquared2D() > 0.f;
+	bIsInAir = OwningMovementComp->IsFalling();
 }

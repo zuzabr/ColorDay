@@ -13,6 +13,8 @@
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/ColorDayInputComponent.h"
 
+#include "ColorDayPlayerController.h"
+
 #include "ColorDayGameplayTags.h"
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
 #include "AbilitySystem/ColorDayAttributeSet.h"
@@ -66,7 +68,7 @@ void AColorDayCharacter::NotifyControllerChanged()
 	Super::NotifyControllerChanged();
 
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	if (AColorDayPlayerController* PlayerController = Cast<AColorDayPlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -96,6 +98,8 @@ void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	// Sprinting
 	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &AColorDayCharacter::Sprint);
 	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
+
+	ColorDayInputComponent->BindWeaponInputAction(InputConfigDataAsset, this, &AColorDayCharacter::AbilityInputPressed, &AColorDayCharacter::AbilityInputReleased);
 			
 }
 
@@ -138,7 +142,6 @@ void AColorDayCharacter::SetDefaulSpeed()
 	GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
 	
 }
-
 
 UAbilitySystemComponent* AColorDayCharacter::GetAbilitySystemComponent() const
 {
@@ -198,4 +201,14 @@ void AColorDayCharacter::Sprint(const FInputActionValue& Value)
 void AColorDayCharacter::StopSprint(const FInputActionValue& Value)
 {
 	SetDefaulSpeed();
+}
+
+void AColorDayCharacter::AbilityInputPressed(FGameplayTag IputTag)
+{
+	ColorDayAbilitySystemComp->OnAbilityInputPressed(IputTag);
+}
+
+void AColorDayCharacter::AbilityInputReleased(FGameplayTag IputTag)
+{
+	ColorDayAbilitySystemComp->OnAbilityInputReleased(IputTag);
 }

@@ -16,9 +16,10 @@ UCombatComponent::UCombatComponent()
 
 void UCombatComponent::RegisterWeapon(FGameplayTag WeaponTag, AColorDayGun* Weapon, bool bEquipped)
 {
-	if (CarriedWeaponMap.Contains(WeaponTag) && Weapon)
+	if (!CarriedWeaponMap.Contains(WeaponTag) && Weapon)
 	{
 		CarriedWeaponMap.Emplace(WeaponTag, Weapon);
+		Debug::Print(TEXT("Weapon tag is working"));
 
 		if (bEquipped)
 		{
@@ -26,7 +27,7 @@ void UCombatComponent::RegisterWeapon(FGameplayTag WeaponTag, AColorDayGun* Weap
 		}
 	}
 
-	Debug::Print(TEXT("Combat Component Valid"));
+	
 }
 
 AColorDayGun* UCombatComponent::GetCarriedWeaponByTag(FGameplayTag WeaponTag) const
