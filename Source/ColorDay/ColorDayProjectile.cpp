@@ -4,10 +4,15 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Components/DecalComponent.h"
+
+#include "Actors/ColorInteractionInterface.h"
 #include "Actors/ColorDayActor.h"
+
+#include "ColorDayDebugHelper.h"
 
 AColorDayProjectile::AColorDayProjectile() 
 {
@@ -38,6 +43,8 @@ AColorDayProjectile::AColorDayProjectile()
 
 void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	
+	//************************************Spawn Effects of Hit, need to be changed due to type of actor hit**************************
 	const auto PaintEffect = ProjectileInfo.PaintSplatterEffect;
 	if (PaintEffect && GetWorld())
 	{
@@ -66,22 +73,37 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 		}
 	}
 
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+
+
+	const auto HitActor = OtherActor;
+	const auto HittedComp = OtherComp;
+
+	//*********************************** Send a logic to iteractive actor********************************************************
+	if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag);
+	}
+
+	//*********************************** Add impulse if we hit a physics**************************************************			
+	if ((HitActor != nullptr) && (HitActor != this) && (HittedComp != nullptr) && HittedComp->IsSimulatingPhysics())
+	{
+		HittedComp->AddImpulseAtLocation(GetVelocity() * 10.0f, GetActorLocation());
 
 	}
 
-
-	SpawnColorActor(Hit);
+	
+	//*********************************** Send a logic to actor with physics material********************************************************
+	if (HitActor->ActorHasTag(TEXT("Tag_Floor")))
+	{
+		Debug::Print(TEXT("Tag_Floor"));
+	}
 
 	Destroy();
 }
 
 void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 {
-	const auto ActorToSpawn = ProjectileInfo.ActorToSpawn;
+	/*const auto ActorToSpawn = ProjectileInfo.ActorToSpawn;
 
 	if (!ActorToSpawn || !GetWorld()) return;
 
@@ -94,6 +116,6 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 
-	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);
+	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);*/
 	
 }

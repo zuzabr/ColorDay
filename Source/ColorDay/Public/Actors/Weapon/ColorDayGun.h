@@ -49,9 +49,7 @@ private:
 
 	/*Iterator for ammo*/
 	int32 CurrentAmmoIndex = 0;
-
 	int32 CurrentAmmoNumber;
-
 	AColorDayCharacter* Character;
 
 	

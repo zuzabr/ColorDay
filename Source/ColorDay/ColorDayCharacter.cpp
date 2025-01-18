@@ -19,10 +19,12 @@
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
 #include "AbilitySystem/ColorDayAttributeSet.h"
 #include "AbilitySystem/DA_StartupHeroAbilities.h"
+#include "Actors/ColorInteractionInterface.h"
 
 #include "Components/CombatComponent.h"
 
 #include "ColorDayDebugHelper.h"
+#include "DrawDebugHelpers.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -54,6 +56,8 @@ AColorDayCharacter::AColorDayCharacter()
 
 	// Create Combat Component
 	CombatComponent = CreateDefaultSubobject< UCombatComponent>(TEXT("CombatComponent"));
+
+	InteractionTag = ColorDayGameplayTags::ColorActor_Instigator_Player;
 
 	SetDefaulSpeed();
 
@@ -99,6 +103,10 @@ void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &AColorDayCharacter::Sprint);
 	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
 
+	// Interacting
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Interact, ETriggerEvent::Triggered, this, &AColorDayCharacter::Interact);
+
+	// Bind Weapon Input Mapping
 	ColorDayInputComponent->BindWeaponInputAction(InputConfigDataAsset, this, &AColorDayCharacter::AbilityInputPressed, &AColorDayCharacter::AbilityInputReleased);
 			
 }
@@ -110,7 +118,6 @@ void AColorDayCharacter::PossessedBy(AController* NewController)
 	if (ColorDayAbilitySystemComp)
 	{
 		ColorDayAbilitySystemComp->InitAbilityActorInfo(this, this);
-		Debug::Print(TEXT("Ability System Component Valid"));
 	}
 
 	//ensure(!StartupAbilities.IsNull());
@@ -201,6 +208,37 @@ void AColorDayCharacter::Sprint(const FInputActionValue& Value)
 void AColorDayCharacter::StopSprint(const FInputActionValue& Value)
 {
 	SetDefaulSpeed();
+}
+
+void AColorDayCharacter::Interact(const FInputActionValue& Value)
+{
+	FVector Start;
+	FRotator ViewRotation;
+	GetActorEyesViewPoint(Start, ViewRotation);
+
+	FVector End = Start + (ViewRotation.Vector() * InteractionRange);
+
+	FHitResult HitResult;
+	FCollisionQueryParams TraceParams;
+	TraceParams.bTraceComplex = true;
+	TraceParams.AddIgnoredActor(this); // Ignore the player character
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 2.0f);
+	// Perform line trace
+	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, TraceParams))
+	{
+		// Check if the actor has a specific tag or interface
+		AActor* HitActor = HitResult.GetActor();
+		if (!HitActor) return;
+		
+		if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
+		{
+			InteractionInterface->TryToInteractWithItem(InteractionTag);
+		}
+	}
+
+	// Debug visualization
+	
 }
 
 void AColorDayCharacter::AbilityInputPressed(FGameplayTag IputTag)

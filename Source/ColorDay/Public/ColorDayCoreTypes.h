@@ -11,14 +11,16 @@ class AColorDayActor;
 class UPlayerLinkedAnimLayer;
 class UColorDayGameplayAbility;
 class UInputMappingContext;
+class UGA_ColorActorAbility;
 
+
+//*****************Weapon Information*****************************************
 USTRUCT(BlueprintType)
 struct FAmmoType
 {
 	GENERATED_USTRUCT_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString AmmoName;
+	
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly)
@@ -35,8 +37,6 @@ struct FAmmoType
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 MaxAmmo;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsOpened = true;
 
 
 
@@ -46,6 +46,9 @@ USTRUCT(BlueprintType)
 struct FProjectileInfo
 {
 	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FGameplayTag AmmoTag;
 
 	// Niagara System for paint splatter
 	UPROPERTY(EditAnywhere)
@@ -59,8 +62,6 @@ struct FProjectileInfo
 	UPROPERTY(EditAnywhere)
 	FVector DecalSize = FVector(40.f, 40.f, 40.f);
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AColorDayActor> ActorToSpawn;
 
 };
 
@@ -94,3 +95,17 @@ struct FWeaponData
 	TArray<FPlayerAbilitySet> DefaultWeaponAbilities;
 };
 
+USTRUCT(BlueprintType)
+struct FColorActorAbilitySet
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "ColorTag"))
+	FGameplayTag ColorTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGA_ColorActorAbility> AbilityToGrant;
+
+	bool IsValid() const;
+
+};

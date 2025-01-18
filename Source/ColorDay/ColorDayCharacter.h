@@ -75,6 +75,8 @@ protected:
 	void Sprint(const FInputActionValue& Value);
 	void StopSprint(const FInputActionValue& Value);
 
+	void Interact(const FInputActionValue& Value);
+
 	// GAS Iput for abiliities
 	void AbilityInputPressed(FGameplayTag IputTag);
 	void AbilityInputReleased(FGameplayTag IputTag);
@@ -95,7 +97,8 @@ protected:
 	TSoftObjectPtr<UDA_StartupHeroAbilities> StartupAbilities;
 
 	
-		
+
+	
 
 
 private:
@@ -104,6 +107,11 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
 	UCombatComponent* CombatComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Interaction")
+	float InteractionRange = 500.0f;
+
+	FGameplayTag InteractionTag;
 
 	bool bCanSprint = true;
 	bool bCanCrouch = true;

@@ -13,6 +13,7 @@ namespace ColorDayGameplayTags
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Crouch);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Sprint);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Equip);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Interact);
 
 	/**Weapon Input Tags**/
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Unequip);
@@ -31,4 +32,24 @@ namespace ColorDayGameplayTags
 	/**Player Event Tags**/
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Gun);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Gun);
+
+	/**Color Projectile Tag**/
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Red);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Grey);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Green);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Blue);
+
+	/**Interactive Actor Ability*/
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Ability_Activate);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Ability_Deactivate);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Ability_BecomeExplosive);
+
+	/**Interactive Actor Tags*/
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Status_Active);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Status_Explosive);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Status_HasPhysics);
+
+	/**Interactive Actor Instigators*/
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Instigator_Player);
+	
 }

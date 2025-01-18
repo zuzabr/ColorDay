@@ -9,7 +9,7 @@
 
 class UColorDayGameplayAbility;
 class UColorDayAbilitySystemComp;
-
+class UGameplayEffect;
 
 
 UCLASS()
@@ -21,15 +21,18 @@ public:
 	virtual void GiveToAbilitySystemComponent(UColorDayAbilitySystemComp* InASC, int32 ApplyLevel = 1);
 
 protected:
-	UPROPERTY(EditDefaultsOnly,Category = "Abilities")
+	UPROPERTY(EditDefaultsOnly,Category = "StartUpData")
 	TArray<TSubclassOf<UColorDayGameplayAbility>> ActivateOnGivenAbilities;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
 	TArray<TSubclassOf<UColorDayGameplayAbility>> ReactiveAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
+	TArray<TSubclassOf<UGameplayEffect>> StartUpGameplayEffects;
 
 	void GrantAbilities(const TArray<TSubclassOf<UColorDayGameplayAbility>>& AbilitiesToGive, UColorDayAbilitySystemComp* InASC, int32 ApplyLevel = 1);
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
 	TArray<FPlayerAbilitySet> PlayerStartAbilitySets;
 };

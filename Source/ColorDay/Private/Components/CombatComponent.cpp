@@ -19,7 +19,7 @@ void UCombatComponent::RegisterWeapon(FGameplayTag WeaponTag, AColorDayGun* Weap
 	if (!CarriedWeaponMap.Contains(WeaponTag) && Weapon)
 	{
 		CarriedWeaponMap.Emplace(WeaponTag, Weapon);
-		Debug::Print(TEXT("Weapon tag is working"));
+		
 
 		if (bEquipped)
 		{

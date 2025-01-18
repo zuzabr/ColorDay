@@ -6,3 +6,8 @@ bool FPlayerAbilitySet::IsValid() const
 {
     return InputTag.IsValid() && AbilityToGrant;
 }
+
+bool FColorActorAbilitySet::IsValid() const
+{
+    return ColorTag.IsValid() && AbilityToGrant;
+}

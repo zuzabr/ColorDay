@@ -23,6 +23,17 @@ void UDA_StartupHeroAbilities::GiveToAbilitySystemComponent(UColorDayAbilitySyst
 
 		InASC->GiveAbility(AbilitySpec);
 	}
+
+	if (!StartUpGameplayEffects.IsEmpty())
+	{
+		for (const TSubclassOf<UGameplayEffect>& EffectClass : StartUpGameplayEffects)
+		{
+			if (!EffectClass) continue;
+
+			UGameplayEffect* EffectCDO = EffectClass->GetDefaultObject<UGameplayEffect>();
+			InASC->ApplyGameplayEffectToSelf(EffectCDO, ApplyLevel, InASC->MakeEffectContext());
+		}
+	}
 }
 
 void UDA_StartupHeroAbilities::GrantAbilities(const TArray<TSubclassOf<UColorDayGameplayAbility>>& AbilitiesToGive, UColorDayAbilitySystemComp* InASC, int32 ApplyLevel)
