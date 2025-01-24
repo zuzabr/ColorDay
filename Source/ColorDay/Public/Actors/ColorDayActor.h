@@ -34,7 +34,7 @@ public:
 	FORCEINLINE UASC_ColorActor* GetColorDayAbilitySystemComp() const { return ASC_ColorActor; }
 	FORCEINLINE UColorDayAttributeSet* GetColorDayAttributeSet() const { return ColorDayAttributeSet; }
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilitySystem|Abilities")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ColorAbilitySystem|Abilities")
 	bool HasPhysics = true;
 
 protected:
@@ -47,16 +47,16 @@ protected:
 	virtual void TryToHitItem(const FGameplayTag& ColorTag) const override;
 
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ColorAbilitySystem")
 	UASC_ColorActor* ASC_ColorActor;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ColorAbilitySystem")
 	UColorDayAttributeSet* ColorDayAttributeSet;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AbilitySystem|Abilities")
+	UPROPERTY(EditDefaultsOnly, Category = "ColorAbilitySystem|Abilities")
 	TArray<FColorActorAbilitySet> ColorActorAbilitySet;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "AbilitySystem|Abilities")
+	UPROPERTY(EditDefaultsOnly, Category = "ColorAbilitySystem|Abilities")
 	bool ActiveFromStart = true;
 
 	

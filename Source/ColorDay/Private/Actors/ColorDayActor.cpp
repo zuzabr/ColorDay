@@ -79,9 +79,12 @@ void AColorDayActor::PostInitializeComponents()
 	
 }
 
+
+
 void AColorDayActor::TryToInteractWithItem(const FGameplayTag& ColorTag) const
 {
 	Debug::Print(TEXT("Actor was tried to Interact"));
+	
 }
 
 void AColorDayActor::TryToHitItem(const FGameplayTag& ColorTag) const

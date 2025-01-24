@@ -20,7 +20,6 @@ struct FAmmoType
 {
 	GENERATED_USTRUCT_BODY()
 
-	
 
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly)
@@ -36,8 +35,6 @@ struct FAmmoType
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 MaxAmmo;
-
-
 
 
 };
@@ -95,6 +92,7 @@ struct FWeaponData
 	TArray<FPlayerAbilitySet> DefaultWeaponAbilities;
 };
 
+
 USTRUCT(BlueprintType)
 struct FColorActorAbilitySet
 {
@@ -108,4 +106,17 @@ struct FColorActorAbilitySet
 
 	bool IsValid() const;
 
+};
+
+
+USTRUCT(BlueprintType)
+struct FItemInputData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UInputMappingContext* ItemInputMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "ItemTag"))
+	TArray<FPlayerAbilitySet> ItemAbilities;
 };

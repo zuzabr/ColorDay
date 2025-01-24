@@ -12,6 +12,7 @@
 #include "Engine/LocalPlayer.h"
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/ColorDayInputComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 #include "ColorDayPlayerController.h"
 
@@ -49,6 +50,9 @@ AColorDayCharacter::AColorDayCharacter()
 	Mesh1P->bCastDynamicShadow = true;
 	Mesh1P->CastShadow = true;
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+
+	// Create Physics Handle Component
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysicsHandle"));
 
 	// Create Ability System
 	ColorDayAbilitySystemComp = CreateDefaultSubobject<UColorDayAbilitySystemComp>(TEXT("ColorDayAbilitySystemComp"));
@@ -104,7 +108,7 @@ void AColorDayCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Sprint, ETriggerEvent::Completed, this, &AColorDayCharacter::StopSprint);
 
 	// Interacting
-	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Interact, ETriggerEvent::Triggered, this, &AColorDayCharacter::Interact);
+	ColorDayInputComponent->BindNativeInputAction(InputConfigDataAsset, ColorDayGameplayTags::InputTag_Interact, ETriggerEvent::Started, this, &AColorDayCharacter::Interact);
 
 	// Bind Weapon Input Mapping
 	ColorDayInputComponent->BindWeaponInputAction(InputConfigDataAsset, this, &AColorDayCharacter::AbilityInputPressed, &AColorDayCharacter::AbilityInputReleased);
@@ -223,7 +227,7 @@ void AColorDayCharacter::Interact(const FInputActionValue& Value)
 	TraceParams.bTraceComplex = true;
 	TraceParams.AddIgnoredActor(this); // Ignore the player character
 
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 2.0f);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 2.0f);
 	// Perform line trace
 	if (GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, TraceParams))
 	{

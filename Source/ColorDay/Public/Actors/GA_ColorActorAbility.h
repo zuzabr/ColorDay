@@ -23,6 +23,8 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
 	UASC_ColorActor* GetColorColorDayAbilitySystemComp()const;
 
+
+
 private:
 	TWeakObjectPtr<AColorDayActor> CachedColorActor;
 	

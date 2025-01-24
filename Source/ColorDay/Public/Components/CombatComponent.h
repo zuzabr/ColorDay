@@ -5,9 +5,13 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "GameplayTagContainer.h"
+#include "ColorDayCoreTypes.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "CombatComponent.generated.h"
 
 class AColorDayGun;
+class AColorDayActor;
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class COLORDAY_API UCombatComponent : public UActorComponent
@@ -27,8 +31,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	AColorDayGun* GetEquippedWeapon() const;
 
+
+
+	
+
+	UFUNCTION(BlueprintCallable)
+	void AssignGrantedAbilitySpecHandles(const TArray< FGameplayAbilitySpecHandle>& SpecHandles);
+
+	UFUNCTION(BlueprintPure)
+	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles() const;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Combat")
 	FGameplayTag EquippedWeaponTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
+	FItemInputData CarringItemData;
+
 
 protected:
 	// Called when the game starts
@@ -55,4 +73,5 @@ protected:
 
 private:
 	TMap<FGameplayTag, AColorDayGun*> CarriedWeaponMap;
+	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 };

@@ -3,6 +3,7 @@
 
 #include "Actors/Interactive/InteractiveActor.h"
 #include "Actors/ASC_ColorActor.h"
+#include "ColorDay/ColorDayCharacter.h"
 
 void AInteractiveActor::TryToHitItem(const FGameplayTag& ColorTag) const
 {
@@ -11,5 +12,7 @@ void AInteractiveActor::TryToHitItem(const FGameplayTag& ColorTag) const
 
 void AInteractiveActor::TryToInteractWithItem(const FGameplayTag& ColorTag) const
 {
+	
 	GetColorDayAbilitySystemComp()->ActivateAbility(ColorTag);
+
 }

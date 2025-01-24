@@ -2,16 +2,22 @@
 
 
 #include "Components/CombatComponent.h"
-#include "ColorDayDebugHelper.h"
+#include "Actors/ColorDayActor.h"
+#include "ColorDay/ColorDayCharacter.h"
+#include "Animation/PlayerLinkedAnimLayer.h"
+#include "AbilitySystem/ColorDayAbilitySystemComp.h"
+#include "EnhancedInputSubsystems.h"
+#include "ColorDayPlayerController.h"
+#include "Engine/LocalPlayer.h"
+
+
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+
 	PrimaryComponentTick.bCanEverTick = false;
 
-	// ...
 }
 
 void UCombatComponent::RegisterWeapon(FGameplayTag WeaponTag, AColorDayGun* Weapon, bool bEquipped)
@@ -20,13 +26,11 @@ void UCombatComponent::RegisterWeapon(FGameplayTag WeaponTag, AColorDayGun* Weap
 	{
 		CarriedWeaponMap.Emplace(WeaponTag, Weapon);
 		
-
 		if (bEquipped)
 		{
 			EquippedWeaponTag = WeaponTag;
 		}
 	}
-
 	
 }
 
@@ -51,13 +55,23 @@ AColorDayGun* UCombatComponent::GetEquippedWeapon() const
 }
 
 
+
+void UCombatComponent::AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& SpecHandles)
+{
+	GrantedAbilitySpecHandles = SpecHandles;
+}
+
+TArray<FGameplayAbilitySpecHandle> UCombatComponent::GetGrantedAbilitySpecHandles() const
+{
+	return GrantedAbilitySpecHandles;
+}
+
+
 // Called when the game starts
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
-	
+		
 }
 
 

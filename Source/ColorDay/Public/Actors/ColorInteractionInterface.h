@@ -7,6 +7,8 @@
 #include "GameplayTagContainer.h"
 #include "ColorInteractionInterface.generated.h"
 
+class AColorDayCharacter;
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UColorInteractionInterface : public UInterface

@@ -23,6 +23,7 @@ class UColorDayAttributeSet;
 class UDA_StartupHeroAbilities;
 
 class UCombatComponent;
+class UPhysicsHandleComponent;
 
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -40,6 +41,9 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
+	UPhysicsHandleComponent* PhysicsHandle;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float DefaultSpeed=400.0f;

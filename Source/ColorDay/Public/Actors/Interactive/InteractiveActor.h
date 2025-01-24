@@ -6,9 +6,8 @@
 #include "Actors/ColorDayActor.h"
 #include "InteractiveActor.generated.h"
 
-/**
- * 
- */
+// Later add materials, VFX etc
+
 UCLASS()
 class COLORDAY_API AInteractiveActor : public AColorDayActor
 {
