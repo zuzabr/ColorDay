@@ -32,7 +32,5 @@ protected:
 
 	void GrantAbilities(const TArray<TSubclassOf<UColorDayGameplayAbility>>& AbilitiesToGive, UColorDayAbilitySystemComp* InASC, int32 ApplyLevel = 1);
 
-private:
-	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
-	TArray<FPlayerAbilitySet> PlayerStartAbilitySets;
+
 };

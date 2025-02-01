@@ -47,6 +47,7 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Grey, "Projectile.Grey");
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Green, "Projectile.Green");
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Blue, "Projectile.Blue");
+	UE_DEFINE_GAMEPLAY_TAG(Projectile_Yellow, "Projectile.Yellow");
 
 	/**Interactive Actor Ability*/
 	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Ability_Activate, "ColorActor.Ability.Activate");
@@ -66,9 +67,13 @@ namespace ColorDayGameplayTags
 	
 	/**Interactive Actor Instigators*/
 	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Instigator_Player, "ColorActor.Instigator.Player");
+	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Instigator_NPC, "ColorActor.Instigator.NPC");
 
 	/**Process tags*/
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedUnequip, "Process.NeedUnequip");
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedEquipWeapon, "Process.NeedEquipWeapon");
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedEquipItem, "Process.NeedEquipItem");
+
+	/**Shared tags*/
+	UE_DEFINE_GAMEPLAY_TAG(Shared_Damage, "Shared.Damage");
 }

@@ -44,7 +44,7 @@ protected:
 
 
 	virtual void TryToInteractWithItem(const FGameplayTag& ColorTag) const override;
-	virtual void TryToHitItem(const FGameplayTag& ColorTag) const override;
+	virtual void TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage = 0.f) const override;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ColorAbilitySystem")

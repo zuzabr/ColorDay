@@ -8,8 +8,7 @@
 
 class UCombatComponent;
 class UColorDayAbilitySystemComp;
-class AColorDayCharacter;
-class AColorDayPlayerController;
+
 
 UENUM(BlueprintType)
 enum class EColorDayAbilityActivationPolicy : uint8
@@ -23,13 +22,6 @@ class COLORDAY_API UColorDayGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
 
-public:
-	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	AColorDayCharacter* GetColorDayCharacter();
-
-	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	AColorDayPlayerController* GetColorController();
-	
 protected:
 
 	virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
@@ -39,12 +31,13 @@ protected:
 	EColorDayAbilityActivationPolicy AbilityActivationPolicy = EColorDayAbilityActivationPolicy::OnTriggered;
 
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	UCombatComponent* GetCombatComponent() const;
-
-	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
 	UColorDayAbilitySystemComp* GetColorColorDayAbilitySystemComp()const;
 
-private:
-	TWeakObjectPtr<AColorDayCharacter> CachedCharacter;
-	TWeakObjectPtr<AColorDayPlayerController> CachedController;
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "ColorDayAbility")
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle);
+
+
+	
 };

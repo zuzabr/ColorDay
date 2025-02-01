@@ -20,9 +20,9 @@ struct FInputActionValue;
 
 class UColorDayAbilitySystemComp;
 class UColorDayAttributeSet;
-class UDA_StartupHeroAbilities;
+class UDA_PlayerAbilities;
 
-class UCombatComponent;
+class UPlayerCombatComponent;
 class UPhysicsHandleComponent;
 
 
@@ -45,6 +45,9 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
 	UPhysicsHandleComponent* PhysicsHandle;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
+	UPlayerCombatComponent* CombatComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float DefaultSpeed=400.0f;
 
@@ -62,7 +65,7 @@ public:
 	
 	FORCEINLINE UColorDayAbilitySystemComp* GetColorDayAbilitySystemComp() const {return ColorDayAbilitySystemComp;}
 	FORCEINLINE UColorDayAttributeSet* GetColorDayAttributeSet() const { return ColorDayAttributeSet; }
-	FORCEINLINE UCombatComponent* GetCombatComponent() const { return CombatComponent; }
+	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
@@ -98,19 +101,16 @@ protected:
 	UColorDayAttributeSet* ColorDayAttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilitySystem")
-	TSoftObjectPtr<UDA_StartupHeroAbilities> StartupAbilities;
+	TSoftObjectPtr<UDA_PlayerAbilities> StartupAbilities;
 
-	
 
-	
 
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CharacterData, meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-	UCombatComponent* CombatComponent;
+
 
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float InteractionRange = 500.0f;

@@ -87,7 +87,7 @@ void AColorDayActor::TryToInteractWithItem(const FGameplayTag& ColorTag) const
 	
 }
 
-void AColorDayActor::TryToHitItem(const FGameplayTag& ColorTag) const
+void AColorDayActor::TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage) const
 {
 	Debug::Print(TEXT("Actor was tried to hit"));	
 }

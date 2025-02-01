@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 #include "ColorDayCoreTypes.generated.h"
 
 class AColorDayProjectile;
@@ -12,6 +13,8 @@ class UPlayerLinkedAnimLayer;
 class UColorDayGameplayAbility;
 class UInputMappingContext;
 class UGA_ColorActorAbility;
+class UGA_ColorDayPlayer;
+
 
 
 //*****************Weapon Information*****************************************
@@ -39,13 +42,18 @@ struct FAmmoType
 
 };
 
+
+//****************Projectile Information************************************
 USTRUCT(BlueprintType)
 struct FProjectileInfo
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FGameplayTag AmmoTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FScalableFloat ColorBaseDamage;
 
 	// Niagara System for paint splatter
 	UPROPERTY(EditAnywhere)
@@ -71,7 +79,7 @@ struct FPlayerAbilitySet
 	FGameplayTag InputTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UColorDayGameplayAbility> AbilityToGrant;
+	TSubclassOf<UGA_ColorDayPlayer> AbilityToGrant;
 
 	bool IsValid() const;
 
@@ -117,6 +125,6 @@ struct FItemInputData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputMappingContext* ItemInputMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "ItemTag"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FPlayerAbilitySet> ItemAbilities;
 };

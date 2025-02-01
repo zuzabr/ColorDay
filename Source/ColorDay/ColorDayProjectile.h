@@ -28,6 +28,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileInfo)
 	FProjectileInfo ProjectileInfo;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+	int32 ProjectileLevel;
+
+	float GetProjectileDamageAtLevel(int32 Level) const;
+
+
+
 public:
 	AColorDayProjectile();
 

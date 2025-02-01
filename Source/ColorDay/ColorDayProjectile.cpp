@@ -14,7 +14,12 @@
 
 #include "ColorDayDebugHelper.h"
 
-AColorDayProjectile::AColorDayProjectile() 
+float AColorDayProjectile::GetProjectileDamageAtLevel(int32 Level) const
+{
+	return ProjectileInfo.ColorBaseDamage.GetValueAtLevel(Level);
+}
+
+AColorDayProjectile::AColorDayProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
@@ -81,7 +86,7 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	//*********************************** Send a logic to iteractive actor********************************************************
 	if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
 	{
-		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag);
+		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag, GetProjectileDamageAtLevel(ProjectileLevel));
 	}
 
 	//*********************************** Add impulse if we hit a physics**************************************************			

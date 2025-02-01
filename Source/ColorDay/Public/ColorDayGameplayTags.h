@@ -48,6 +48,7 @@ namespace ColorDayGameplayTags
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Grey);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Green);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Blue);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Projectile_Yellow);
 
 	/**Interactive Actor Ability*/
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Ability_Activate);
@@ -66,10 +67,13 @@ namespace ColorDayGameplayTags
 
 	/**Interactive Actor Instigators*/
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Instigator_Player);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ColorActor_Instigator_NPC);
 
 	/**Process tags*/
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Process_NeedUnequip);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Process_NeedEquipWeapon);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Process_NeedEquipItem);
 	
+	/**Shared tags*/
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Damage);
 }

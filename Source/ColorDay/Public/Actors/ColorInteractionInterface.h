@@ -24,5 +24,5 @@ class COLORDAY_API IColorInteractionInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	virtual void TryToInteractWithItem(const FGameplayTag& ColorTag) const = 0;
-	virtual void TryToHitItem(const FGameplayTag& ColorTag) const = 0;
+	virtual void TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage = 0.f) const = 0;
 };

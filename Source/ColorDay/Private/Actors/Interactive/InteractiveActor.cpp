@@ -5,7 +5,7 @@
 #include "Actors/ASC_ColorActor.h"
 #include "ColorDay/ColorDayCharacter.h"
 
-void AInteractiveActor::TryToHitItem(const FGameplayTag& ColorTag) const
+void AInteractiveActor::TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage) const
 {
 	GetColorDayAbilitySystemComp()->ActivateAbility(ColorTag);
 }
