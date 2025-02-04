@@ -21,6 +21,8 @@ class COLORDAY_API UColorDayAttributeSet : public UAttributeSet
 public:
 	UColorDayAttributeSet();
 
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
 	UPROPERTY(BlueprintReadOnly, Category = "Health")
 	FGameplayAttributeData CurrentHealth;
 	ATTRIBUTE_ACCESSORS(UColorDayAttributeSet, CurrentHealth)
@@ -44,6 +46,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Defence")
 	FGameplayAttributeData ShieldPower;
 	ATTRIBUTE_ACCESSORS(UColorDayAttributeSet, ShieldPower)
+
+
+	UPROPERTY(BlueprintReadOnly, Category = "Damage")
+	FGameplayAttributeData DamageTaken;
+	ATTRIBUTE_ACCESSORS(UColorDayAttributeSet, DamageTaken)
 
 	
 };

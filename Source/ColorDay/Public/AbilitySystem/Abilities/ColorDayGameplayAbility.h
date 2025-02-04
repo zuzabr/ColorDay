@@ -33,10 +33,10 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
 	UColorDayAbilitySystemComp* GetColorColorDayAbilitySystemComp()const;
 
-	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle);
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle);
 
 	UFUNCTION(BlueprintCallable, Category = "ColorDayAbility")
-	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle);
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle);
 
 
 	

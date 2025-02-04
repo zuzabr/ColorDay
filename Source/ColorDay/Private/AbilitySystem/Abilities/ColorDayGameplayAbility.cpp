@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/ColorDayGameplayAbility.h"
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Components/CombatComponent.h"
 #include "ColorDayDebugHelper.h"
 #include "ColorDay/ColorDayCharacter.h"
@@ -37,15 +38,22 @@ UColorDayAbilitySystemComp* UColorDayGameplayAbility::GetColorColorDayAbilitySys
 	return Cast<UColorDayAbilitySystemComp>(CurrentActorInfo->AbilitySystemComponent);
 }
 
-FActiveGameplayEffectHandle UColorDayGameplayAbility::NativeApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle)
+FActiveGameplayEffectHandle UColorDayGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
 {
-	check(SpecHandle.IsValid());
-	return GetColorColorDayAbilitySystemComp()->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	
+	if (!TargetASC||!SpecHandle.IsValid()) return FActiveGameplayEffectHandle();
+
+
+	return GetColorColorDayAbilitySystemComp()->ApplyGameplayEffectSpecToTarget(
+		*SpecHandle.Data,
+		TargetASC
+	);
 	
 }
 
-FActiveGameplayEffectHandle UColorDayGameplayAbility::BP_ApplyEffectSpecHandleToSelf(const FGameplayEffectSpecHandle& SpecHandle)
+FActiveGameplayEffectHandle UColorDayGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
 {
-	return NativeApplyEffectSpecHandleToSelf(SpecHandle);
+	return NativeApplyEffectSpecHandleToTarget(TargetActor, SpecHandle);
 
 }

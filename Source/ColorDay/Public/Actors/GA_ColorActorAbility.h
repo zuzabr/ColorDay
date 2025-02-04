@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "AbilitySystem/Abilities/ColorDayGameplayAbility.h"
 #include "GA_ColorActorAbility.generated.h"
 
 class AColorDayActor;
 class UASC_ColorActor;
 
 UCLASS()
-class COLORDAY_API UGA_ColorActorAbility : public UGameplayAbility
+class COLORDAY_API UGA_ColorActorAbility : public UColorDayGameplayAbility
 {
 	GENERATED_BODY()
 
@@ -20,8 +21,8 @@ public:
 	AColorDayActor* GetColorDayActor();
 
 protected:
-	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	UASC_ColorActor* GetColorColorDayAbilitySystemComp()const;
+	UFUNCTION(BlueprintPure, Category = "ColorDayAbility|ColorActor")
+	UASC_ColorActor* GetColorActorAbilitySystemComp()const;
 
 
 

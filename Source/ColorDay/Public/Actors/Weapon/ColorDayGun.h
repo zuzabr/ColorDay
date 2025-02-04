@@ -6,6 +6,7 @@
 #include "Actors/ColorDayActor.h"
 #include "ColorDayCoreTypes.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "GameplayEffectTypes.h"
 #include "ColorDayGun.generated.h"
 
 class AColorDayCharacter;
@@ -29,7 +30,8 @@ public:
 	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void Fire();
+	void Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle);
+
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SwitchAmmoType();
@@ -44,6 +46,9 @@ protected:
 	TArray<FAmmoType> AmmoTypes;
 
 
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	FAmmoType GetCurrentAmmoType();
+
 private:
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 
@@ -51,6 +56,7 @@ private:
 	int32 CurrentAmmoIndex = 0;
 	int32 CurrentAmmoNumber;
 	AColorDayCharacter* Character;
+
 
 	
 };

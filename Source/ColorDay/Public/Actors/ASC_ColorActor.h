@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/ColorDayAbilitySystemComp.h"
 #include "AbilitySystemComponent.h"
 #include "ColorDayCoreTypes.h"
 #include "ASC_ColorActor.generated.h"
@@ -11,7 +12,7 @@
  * 
  */
 UCLASS()
-class COLORDAY_API UASC_ColorActor : public UAbilitySystemComponent
+class COLORDAY_API UASC_ColorActor : public UColorDayAbilitySystemComp
 {
 	GENERATED_BODY()
 

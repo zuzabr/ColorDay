@@ -2,13 +2,35 @@
 
 
 #include "AbilitySystem/ColorDayAttributeSet.h"
-
+#include "GameplayEffectExtension.h"
+#include "ColorDayDebugHelper.h"
 UColorDayAttributeSet::UColorDayAttributeSet()
 {
-	InitCurrentHealth(1.f);
+	InitCurrentHealth(100.f);
 	InitMaxHealth(100.f);
-	InitCurrentEnergy(1.f);
+	InitCurrentEnergy(100.f);
 	InitMaxEnergy(100.f);
-	InitAttackPower(1.f);
-	InitShieldPower(1.f);
+	InitAttackPower(100.f);
+	InitShieldPower(100.f);
+}
+
+void UColorDayAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
+	{
+		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
+		SetCurrentHealth(NewCurrentHealth);
+	}
+
+	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
+	{
+		const float OldHealth = GetCurrentHealth();
+		const float DamageDone = GetDamageTaken();
+
+		const float NewCurrentHealth = FMath::Clamp(OldHealth - DamageDone, 0.f, GetMaxHealth());
+		SetCurrentHealth(NewCurrentHealth);
+
+		const FString DebugString = FString::Printf(TEXT("Old Health: %f, Damage Done: %f, New Current Health: %f"), OldHealth, DamageDone, NewCurrentHealth);
+		Debug::Print(DebugString, FColor::Green);
+	}
 }

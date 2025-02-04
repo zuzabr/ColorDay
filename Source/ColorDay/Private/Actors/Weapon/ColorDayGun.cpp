@@ -19,7 +19,13 @@ AColorDayGun::AColorDayGun()
 
 void AColorDayGun::BeginPlay()
 {
+	Super::BeginPlay();
 	Character = Cast<AColorDayCharacter>(GetOwner());
+}
+
+FAmmoType AColorDayGun::GetCurrentAmmoType()
+{
+	return AmmoTypes[CurrentAmmoIndex];
 }
 
 void AColorDayGun::AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& SpecHandles)
@@ -32,7 +38,7 @@ TArray<FGameplayAbilitySpecHandle> AColorDayGun::GetGrantedAbilitySpecHandles() 
 	return GrantedAbilitySpecHandles;
 }
 
-void AColorDayGun::Fire()
+void AColorDayGun::Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle)
 {
 	if (!Character || Character->GetController() == nullptr) return;
 
@@ -44,6 +50,7 @@ void AColorDayGun::Fire()
 	UWorld* const World = GetWorld();
 
 
+	//************************************Spawn Projectile*************************************************
 	AColorDayPlayerController* PlayerController = Cast<AColorDayPlayerController>(Character->GetController());
 	const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
 	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
@@ -54,7 +61,13 @@ void AColorDayGun::Fire()
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 	// Spawn the projectile at the muzzle
-	World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	auto SpawnedProjectile = World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	if(SpawnedProjectile) 
+	{ 
+		SpawnedProjectile->SetOwner(GetOwner());
+		SpawnedProjectile->ProjectileDamageEffectSpecHandle = ProjectileDamageEffectSpecHandle;
+	}
+	
 
 	// Try and play the sound if specified
 	const auto CurFireSound = CurrentAmmo.FireSound;
@@ -76,11 +89,14 @@ void AColorDayGun::Fire()
 	}
 }
 
+
+
 void AColorDayGun::SwitchAmmoType()
 {
 	if (AmmoTypes.IsEmpty()) return;
 
 	CurrentAmmoIndex = (CurrentAmmoIndex + 1) % AmmoTypes.Num();
+
 }
 
 

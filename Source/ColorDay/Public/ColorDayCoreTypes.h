@@ -25,7 +25,7 @@ struct FAmmoType
 
 
 	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<AColorDayProjectile> ProjectileClass;
 
 	/** Sound to play each time we fire */

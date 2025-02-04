@@ -11,13 +11,11 @@
 
 #include "Actors/ColorInteractionInterface.h"
 #include "Actors/ColorDayActor.h"
+#include "ColorDayFunctionLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+
 
 #include "ColorDayDebugHelper.h"
-
-float AColorDayProjectile::GetProjectileDamageAtLevel(int32 Level) const
-{
-	return ProjectileInfo.ColorBaseDamage.GetValueAtLevel(Level);
-}
 
 AColorDayProjectile::AColorDayProjectile()
 {
@@ -86,7 +84,8 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	//*********************************** Send a logic to iteractive actor********************************************************
 	if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
 	{
-		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag, GetProjectileDamageAtLevel(ProjectileLevel));
+		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag);
+		HandleApplyProjectileDamage(HitActor);
 	}
 
 	//*********************************** Add impulse if we hit a physics**************************************************			
@@ -123,4 +122,20 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 
 	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);*/
 	
+}
+
+void AColorDayProjectile::HandleApplyProjectileDamage(AActor* HitActor)
+{
+	if (!ProjectileDamageEffectSpecHandle.IsValid()) return;
+
+	const bool bWasApplied = UColorDayFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(GetOwner(), HitActor, ProjectileDamageEffectSpecHandle);
+
+	if (bWasApplied)
+	{
+		FGameplayEventData Data;
+		Data.Instigator = GetOwner();
+		Data.Target = HitActor;
+		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, ProjectileInfo.AmmoTag, Data);
+	}
 }
