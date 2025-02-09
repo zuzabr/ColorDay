@@ -3,7 +3,10 @@
 
 #include "AbilitySystem/ColorDayAttributeSet.h"
 #include "GameplayEffectExtension.h"
+#include "ColorDayFunctionLibrary.h"
 #include "ColorDayDebugHelper.h"
+#include "ColorDayGameplayTags.h"
+
 UColorDayAttributeSet::UColorDayAttributeSet()
 {
 	InitCurrentHealth(100.f);
@@ -32,5 +35,14 @@ void UColorDayAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 
 		const FString DebugString = FString::Printf(TEXT("Old Health: %f, Damage Done: %f, New Current Health: %f"), OldHealth, DamageDone, NewCurrentHealth);
 		Debug::Print(DebugString, FColor::Green);
+
+
+		// Manage Character Death
+		if (NewCurrentHealth == 0.f)
+		{
+			UColorDayFunctionLibrary::AddGameplayTagToActor(Data.Target.GetAvatarActor(), ColorDayGameplayTags::Character_Status_Dead);
+		}
 	}
+
+
 }

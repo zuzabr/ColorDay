@@ -33,6 +33,12 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Throw, "Player.Ability.Item.Throw");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Grab, "Player.Ability.Item.Grab");
 
+	UE_DEFINE_GAMEPLAY_TAG(Character_Ability_Death, "Character.Ability.Death");
+
+	UE_DEFINE_GAMEPLAY_TAG(Character_Status_Dead, "Character.Status.Dead");
+
+	UE_DEFINE_GAMEPLAY_TAG(Character_Damage, "Character.Damage");
+
 	/**Weapon Tags**/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Gun, "Player.Weapon.Gun");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Item, "Player.Weapon.Item");
