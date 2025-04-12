@@ -105,6 +105,11 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	Destroy();
 }
 
+FGameplayTag AColorDayProjectile::GetProjectileGameplayTag()
+{
+	return ProjectileInfo.AmmoTag;
+}
+
 void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 {
 	/*const auto ActorToSpawn = ProjectileInfo.ActorToSpawn;
@@ -127,9 +132,12 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 void AColorDayProjectile::HandleApplyProjectileDamage(AActor* HitActor)
 {
 	if (!ProjectileDamageEffectSpecHandle.IsValid()) return;
-
+	
+	// Send A Color info to hit actor and Triggers GameplayEvent
 	const bool bWasApplied = UColorDayFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(GetOwner(), HitActor, ProjectileDamageEffectSpecHandle);
 
+	
+	
 	if (bWasApplied)
 	{
 		FGameplayEventData Data;

@@ -32,7 +32,7 @@ UPlayerCombatComponent* UGA_ColorDayPlayer::GetCombatComponent() const
 	return GetAvatarActorFromActorInfo()->FindComponentByClass<UPlayerCombatComponent>();
 }
 
-FGameplayEffectSpecHandle UGA_ColorDayPlayer::MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& InDamageScalableFloat)
+FGameplayEffectSpecHandle UGA_ColorDayPlayer::MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& InDamageScalableFloat, FGameplayTag ColorTag)
 {
 	if(!EffectClass) return FGameplayEffectSpecHandle();
 
@@ -47,10 +47,11 @@ FGameplayEffectSpecHandle UGA_ColorDayPlayer::MakePlayerDamageEffectSpecHandle(T
 		ContextHandle
 	);
 
-	EffectSpecHandle.Data->SetSetByCallerMagnitude(
-		ColorDayGameplayTags::Shared_Damage,
-		InDamageScalableFloat.GetValueAtLevel(GetAbilityLevel())
-	);
+	if (ColorTag.IsValid())
+	{
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(ColorTag, InDamageScalableFloat.GetValueAtLevel(GetAbilityLevel()));
+	}
+	
 
 	return EffectSpecHandle;
 }

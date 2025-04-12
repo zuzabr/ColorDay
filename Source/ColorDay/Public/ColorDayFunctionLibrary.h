@@ -33,4 +33,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ColorDay|FunctionLibrary")
 	static bool ApplyGameplayEffectSpecHandleToTargetActor(AActor* Instigator, AActor* Target, const FGameplayEffectSpecHandle& EffectSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "ColorDay|FunctionLibrary")
+	static void SwitchStateBasedOnGameplayTag(AActor* Actor, FGameplayTag State, FGameplayTag TagToSet);
 };

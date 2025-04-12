@@ -43,6 +43,8 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
+	FGameplayTag GetProjectileGameplayTag();
+
 
 
 	UPROPERTY(BlueprintReadOnly, Category = ProjectileInfo, meta = (ExposeOnSpawn = "true"))

@@ -23,7 +23,7 @@ public:
 	UEnemyCombatComponent* GetCombatComponent() const;
 
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	FGameplayEffectSpecHandle MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float WeaponDamage, FGameplayTag ColorTag);
+	FGameplayEffectSpecHandle MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& ScalableDamage, FGameplayTag ColorTag);
 
 private:
 	TWeakObjectPtr<ANPCCharacter> CachedNPC;

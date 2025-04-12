@@ -128,3 +128,22 @@ struct FItemInputData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FPlayerAbilitySet> ItemAbilities;
 };
+
+UENUM(BlueprintType)
+enum class ENPCSense : uint8
+{
+	Default       UMETA(DisplayName = "Default"),
+	SightSense    UMETA(DisplayName = "Sight"),
+	HearingSence  UMETA(DisplayName = "Hearing"),
+	DamageSense    UMETA(DisplayName = "Damaging")
+};
+
+UENUM(BlueprintType)
+enum class ENPCState : uint8
+{
+	Passive UMETA(DisplayName = "Passive"),
+	Attack UMETA(DisplayName = "Attack"),
+	Investigate UMETA(DisplayName = "Investigate"),
+	Staggered UMETA(DisplayName = "Staggered"),
+	Dead UMETA(DisplayName = "Dead")
+};

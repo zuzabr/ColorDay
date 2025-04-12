@@ -26,7 +26,7 @@ public:
 	UPlayerCombatComponent* GetCombatComponent() const;
 
 	UFUNCTION(BlueprintPure, Category = "ColorDayAbility")
-	FGameplayEffectSpecHandle MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& InDamageScalableFloat);
+	FGameplayEffectSpecHandle MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& InDamageScalableFloat, FGameplayTag ColorTag);
 
 private:
 	TWeakObjectPtr<AColorDayCharacter> CachedCharacter;

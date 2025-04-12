@@ -49,6 +49,9 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "Weapon")
 	FAmmoType GetCurrentAmmoType();
 
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	FGameplayTag GetCurrentAmmoColorTag();
+
 private:
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 

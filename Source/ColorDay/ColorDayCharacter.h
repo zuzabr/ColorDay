@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Character/ColorCharacterBase.h"
 #include "Logging/LogMacros.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "Actors/ColorInteractionInterface.h"
 #include "ColorDayCharacter.generated.h"
 
 class UInputComponent;
@@ -29,7 +31,7 @@ class UPhysicsHandleComponent;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
+class AColorDayCharacter : public AColorCharacterBase, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -58,9 +60,7 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 public:
 	AColorDayCharacter();
 
-	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
 	FORCEINLINE UColorDayAbilitySystemComp* GetColorDayAbilitySystemComp() const {return ColorDayAbilitySystemComp;}
@@ -70,6 +70,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -110,8 +111,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CharacterData, meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
 
-
-
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float InteractionRange = 500.0f;
 
@@ -124,7 +123,6 @@ private:
 
 	bool CanSprint();
 	void SetDefaulSpeed();
-
 
 
 };

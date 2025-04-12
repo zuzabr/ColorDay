@@ -7,6 +7,7 @@
 #include "ColorDayBaseAnimInst.generated.h"
 
 class AColorDayCharacter;
+class AColorCharacterBase;
 class UCharacterMovementComponent;
 
 UCLASS()
@@ -20,7 +21,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
-	AColorDayCharacter* OwningChar;
+	AColorCharacterBase* OwningChar;
 
 	UPROPERTY()
 	UCharacterMovementComponent* OwningMovementComp;

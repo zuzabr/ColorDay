@@ -40,6 +40,8 @@ void UColorDayFunctionLibrary::RemoveGameplayTagFromActor(AActor* Actor, FGamepl
     {
         ASC->RemoveLooseGameplayTag(TagToRemove);
     }
+
+    
 }
 
 bool UColorDayFunctionLibrary::BP_DoesActorHaveTag(AActor* Actor, FGameplayTag Tag)
@@ -57,8 +59,29 @@ bool UColorDayFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(AActor
     auto InstigatorASC = NativeGetColorDayASC(Instigator);
     auto TargetASC = NativeGetColorDayASC(Target);
     if (!InstigatorASC || !TargetASC) return false;
+    
 
     FActiveGameplayEffectHandle ActiveGameplayEffectHandle = InstigatorASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data, TargetASC);
     return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UColorDayFunctionLibrary::SwitchStateBasedOnGameplayTag(AActor* Actor, FGameplayTag State, FGameplayTag TagToSet)
+{
+    auto ASC = NativeGetColorDayASC(Actor);
+    if (!ASC) return;
+
+
+    TArray<FGameplayTag> TagsToRemove;
+    ASC->GetOwnedGameplayTags().GetGameplayTagArray(TagsToRemove);
+
+    for (const FGameplayTag& Tag : TagsToRemove)
+    {
+        if (Tag.MatchesTag(State) && Tag != State)
+        {
+            ASC->RemoveLooseGameplayTag(Tag);
+        }
+    }
+
+    AddGameplayTagToActor(Actor, TagToSet);
 }
  

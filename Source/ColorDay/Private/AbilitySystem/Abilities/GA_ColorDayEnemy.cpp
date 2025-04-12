@@ -20,9 +20,10 @@ UEnemyCombatComponent* UGA_ColorDayEnemy::GetCombatComponent() const
 	return GetAvatarActorFromActorInfo()->FindComponentByClass<UEnemyCombatComponent>();
 }
 
-FGameplayEffectSpecHandle UGA_ColorDayEnemy::MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float WeaponDamage, FGameplayTag ColorTag)
+FGameplayEffectSpecHandle UGA_ColorDayEnemy::MakeEnemyDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, const FScalableFloat& ScalableDamage, FGameplayTag ColorTag)
 {
-	check(EffectClass);
+	if (!EffectClass) return FGameplayEffectSpecHandle();
+
 	auto ContextHandle = GetColorColorDayAbilitySystemComp()->MakeEffectContext();
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
@@ -36,7 +37,7 @@ FGameplayEffectSpecHandle UGA_ColorDayEnemy::MakeEnemyDamageEffectSpecHandle(TSu
 
 	if (ColorTag.IsValid())
 	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(ColorTag, WeaponDamage);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(ColorTag, ScalableDamage.GetValueAtLevel(GetAbilityLevel()));
 	}
 
 	return EffectSpecHandle;

@@ -3,11 +3,12 @@
 
 #include "Animation/ColorDayBaseAnimInst.h"
 #include "ColorDay/ColorDayCharacter.h"
+#include "Character/ColorCharacterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 void UColorDayBaseAnimInst::NativeInitializeAnimation()
 {
-	OwningChar = Cast<AColorDayCharacter>(TryGetPawnOwner());
+	OwningChar = Cast<AColorCharacterBase>(TryGetPawnOwner());
 	if (!OwningChar) return;
 	OwningMovementComp = OwningChar->GetCharacterMovement();
 }

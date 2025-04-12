@@ -25,7 +25,28 @@ void AColorDayGun::BeginPlay()
 
 FAmmoType AColorDayGun::GetCurrentAmmoType()
 {
+	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
+	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
+
+	if (Projectile)
+	{
+		Projectile->GetProjectileGameplayTag();
+	}
+
 	return AmmoTypes[CurrentAmmoIndex];
+}
+
+FGameplayTag AColorDayGun::GetCurrentAmmoColorTag()
+{
+	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
+	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
+
+	if (Projectile)
+	{
+		return Projectile->GetProjectileGameplayTag();
+	}
+	
+	return FGameplayTag();
 }
 
 void AColorDayGun::AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& SpecHandles)
