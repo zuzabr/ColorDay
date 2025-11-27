@@ -6,6 +6,7 @@
 #include "Actors/ColorDayActor.h"
 #include "ColorDayCoreTypes.h"
 #include "GameplayAbilitySpecHandle.h"
+#include "GameplayEffectTypes.h"
 #include "ColorDayGun.generated.h"
 
 class AColorDayCharacter;
@@ -19,8 +20,9 @@ class COLORDAY_API AColorDayGun : public AColorDayActor
 public:
 	AColorDayGun();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponData")
-	FWeaponData PlayerWeaponData;
+// Ability System
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponInformation")
+	FWeaponData PlayerWeaponData; 
 
 	UFUNCTION(BlueprintCallable)
 	void AssignGrantedAbilitySpecHandles(const TArray< FGameplayAbilitySpecHandle>& SpecHandles);
@@ -28,11 +30,12 @@ public:
 	UFUNCTION(BlueprintPure)
 	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void Fire();
+	UFUNCTION(BlueprintCallable, Category = "WeaponInformation")
+	void Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle);
 
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	UFUNCTION(BlueprintCallable, Category = "WeaponInformation")
 	void SwitchAmmoType();
+// Ability System
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	FVector MuzzleOffset;
@@ -40,16 +43,25 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	FGameplayTag GetCurrentAmmoColorTag();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AmmoInfo)
 	TArray<FAmmoType> AmmoTypes;
 
+	UFUNCTION(BlueprintPure, Category = "Weapon")
+	FAmmoType GetCurrentAmmoType();
+	
+
 
 private:
+
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 
-	/*Iterator for ammo*/
+	/*Iterator for  projectile ammo*/
 	int32 CurrentAmmoIndex = 0;
-	int32 CurrentAmmoNumber;
+
 	AColorDayCharacter* Character;
 
 	

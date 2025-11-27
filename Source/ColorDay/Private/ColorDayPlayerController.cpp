@@ -3,3 +3,12 @@
 
 #include "ColorDayPlayerController.h"
 
+AColorDayPlayerController::AColorDayPlayerController()
+{
+	PlayerTeamID = FGenericTeamId(0);
+}
+
+FGenericTeamId AColorDayPlayerController::GetGenericTeamId() const
+{
+	return PlayerTeamID;
+}

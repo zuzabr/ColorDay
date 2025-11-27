@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ColorDayCoreTypes.h"
+#include "GameplayEffectTypes.h"
 #include "ColorDayProjectile.generated.h"
 
 class USphereComponent;
@@ -25,8 +26,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ProjectileInfo)
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ProjectileInfo)
 	FProjectileInfo ProjectileInfo;
+		
 
 public:
 	AColorDayProjectile();
@@ -40,9 +43,18 @@ public:
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
+	FGameplayTag GetProjectileGameplayTag();
 
+
+
+	UPROPERTY(BlueprintReadOnly, Category = ProjectileInfo, meta = (ExposeOnSpawn = "true"))
+	FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle;
+
+protected:
 	void SpawnColorActor(const FHitResult& Hit);
 
 
+private:
+	void HandleApplyProjectileDamage(AActor* HitActor);
 };
 

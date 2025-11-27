@@ -15,7 +15,7 @@ AColorDayActor* UGA_ColorActorAbility::GetColorDayActor()
 	return CachedColorActor.IsValid() ? CachedColorActor.Get() : nullptr;
 }
 
-UASC_ColorActor* UGA_ColorActorAbility::GetColorColorDayAbilitySystemComp() const
+UASC_ColorActor* UGA_ColorActorAbility::GetColorActorAbilitySystemComp() const
 {
 	return Cast<UASC_ColorActor>(CurrentActorInfo->AbilitySystemComponent);
 }

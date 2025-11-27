@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
@@ -19,10 +20,9 @@
 #include "ColorDayGameplayTags.h"
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
 #include "AbilitySystem/ColorDayAttributeSet.h"
-#include "AbilitySystem/DA_StartupHeroAbilities.h"
+#include "AbilitySystem/DA_PlayerAbilities.h"
 #include "Actors/ColorInteractionInterface.h"
-
-#include "Components/CombatComponent.h"
+#include "Components/PlayerCombatComponent.h"
 
 #include "ColorDayDebugHelper.h"
 #include "DrawDebugHelpers.h"
@@ -59,15 +59,14 @@ AColorDayCharacter::AColorDayCharacter()
 	ColorDayAttributeSet = CreateDefaultSubobject<UColorDayAttributeSet>(TEXT("ColorDayAttributeSet"));
 
 	// Create Combat Component
-	CombatComponent = CreateDefaultSubobject< UCombatComponent>(TEXT("CombatComponent"));
+	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("CombatComponent"));
 
+	// For Other Actors to know who was trying to interact
 	InteractionTag = ColorDayGameplayTags::ColorActor_Instigator_Player;
 
 	SetDefaulSpeed();
 
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////// Input
 

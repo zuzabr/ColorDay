@@ -11,11 +11,16 @@
 
 #include "Actors/ColorInteractionInterface.h"
 #include "Actors/ColorDayActor.h"
+#include "ColorDayFunctionLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 #include "ColorDayDebugHelper.h"
 
-AColorDayProjectile::AColorDayProjectile() 
+AColorDayProjectile::AColorDayProjectile()
 {
+	
+		
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(2.0f);
@@ -82,6 +87,7 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
 	{
 		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag);
+		HandleApplyProjectileDamage(HitActor);	
 	}
 
 	//*********************************** Add impulse if we hit a physics**************************************************			
@@ -101,6 +107,12 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	Destroy();
 }
 
+FGameplayTag AColorDayProjectile::GetProjectileGameplayTag()
+{
+	return ProjectileInfo.AmmoTag;
+}
+
+
 void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 {
 	/*const auto ActorToSpawn = ProjectileInfo.ActorToSpawn;
@@ -118,4 +130,24 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 
 	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);*/
 	
+}
+
+
+void AColorDayProjectile::HandleApplyProjectileDamage(AActor* HitActor)
+{
+	if (!ProjectileDamageEffectSpecHandle.IsValid()) return;
+	
+	// Send A Color info to hit actor and Triggers GameplayEvent
+	const bool bWasApplied = UColorDayFunctionLibrary::ApplyGameplayEffectSpecHandleToTargetActor(GetOwner(), HitActor, ProjectileDamageEffectSpecHandle);
+
+	
+	
+	if (bWasApplied)
+	{
+		FGameplayEventData Data;
+		Data.Instigator = GetOwner();
+		Data.Target = HitActor;
+		
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(HitActor, ProjectileInfo.AmmoTag, Data);
+	}
 }

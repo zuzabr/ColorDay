@@ -3,32 +3,12 @@
 
 #include "AbilitySystem/Abilities/ColorDayGameplayAbility.h"
 #include "AbilitySystem/ColorDayAbilitySystemComp.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Components/CombatComponent.h"
 #include "ColorDayDebugHelper.h"
 #include "ColorDay/ColorDayCharacter.h"
+#include "ColorDayGameplayTags.h"
 
-AColorDayCharacter* UColorDayGameplayAbility::GetColorDayCharacter()
-{
-	if (!CachedCharacter.IsValid()) 
-	{
-		CachedCharacter = Cast<AColorDayCharacter>(CurrentActorInfo->AvatarActor);
-	}
-
-	return CachedCharacter.IsValid() ? CachedCharacter.Get() : nullptr;
-	
-	
-	
-}
-
-AColorDayPlayerController* UColorDayGameplayAbility::GetColorController()
-{
-	if (!CachedController.IsValid())
-	{
-		CachedController = Cast<AColorDayPlayerController>(CurrentActorInfo->PlayerController);		
-	}
-
-	return CachedController.IsValid() ? CachedController.Get() : nullptr;
-}
 
 void UColorDayGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -53,12 +33,27 @@ void UColorDayGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handl
 	}
 }
 
-UCombatComponent* UColorDayGameplayAbility::GetCombatComponent() const
-{
-	return GetAvatarActorFromActorInfo()->FindComponentByClass<UCombatComponent>();
-}
-
 UColorDayAbilitySystemComp* UColorDayGameplayAbility::GetColorColorDayAbilitySystemComp() const
 {
 	return Cast<UColorDayAbilitySystemComp>(CurrentActorInfo->AbilitySystemComponent);
+}
+
+FActiveGameplayEffectHandle UColorDayGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	
+	if (!TargetASC||!SpecHandle.IsValid()) return FActiveGameplayEffectHandle();
+
+
+	return GetColorColorDayAbilitySystemComp()->ApplyGameplayEffectSpecToTarget(
+		*SpecHandle.Data,
+		TargetASC
+	);
+	
+}
+
+FActiveGameplayEffectHandle UColorDayGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& SpecHandle)
+{
+	return NativeApplyEffectSpecHandleToTarget(TargetActor, SpecHandle);
+
 }

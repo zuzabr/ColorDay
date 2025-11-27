@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
+#include "ScalableFloat.h"
 #include "ColorDayCoreTypes.generated.h"
 
 class AColorDayProjectile;
@@ -12,6 +13,8 @@ class UPlayerLinkedAnimLayer;
 class UColorDayGameplayAbility;
 class UInputMappingContext;
 class UGA_ColorActorAbility;
+class UGA_ColorDayPlayer;
+
 
 
 //*****************Weapon Information*****************************************
@@ -22,7 +25,7 @@ struct FAmmoType
 
 
 	/** Projectile class to spawn */
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<AColorDayProjectile> ProjectileClass;
 
 	/** Sound to play each time we fire */
@@ -39,13 +42,21 @@ struct FAmmoType
 
 };
 
+
+//****************Projectile Information************************************
 USTRUCT(BlueprintType)
 struct FProjectileInfo
 {
-	GENERATED_USTRUCT_BODY()
+	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FGameplayTag AmmoTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FScalableFloat ColorBaseDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FLinearColor Color;
 
 	// Niagara System for paint splatter
 	UPROPERTY(EditAnywhere)
@@ -59,6 +70,17 @@ struct FProjectileInfo
 	UPROPERTY(EditAnywhere)
 	FVector DecalSize = FVector(40.f, 40.f, 40.f);
 
+	/** Sound to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* FireSound;
+
+	/** AnimMontage to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* FireAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 MaxAmmo;
+
 
 };
 
@@ -71,7 +93,7 @@ struct FPlayerAbilitySet
 	FGameplayTag InputTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UColorDayGameplayAbility> AbilityToGrant;
+	TSubclassOf<UGA_ColorDayPlayer> AbilityToGrant;
 
 	bool IsValid() const;
 
@@ -90,6 +112,15 @@ struct FWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty ="InputTag"))
 	TArray<FPlayerAbilitySet> DefaultWeaponAbilities;
+};
+
+// Shoot with projectile or trace
+UENUM(BlueprintType)
+enum class EShootingState : uint8
+{
+	Projectile       UMETA(DisplayName = "Projectile"),
+	Trace            UMETA(DisplayName = "Trace")
+	
 };
 
 
@@ -117,6 +148,25 @@ struct FItemInputData
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UInputMappingContext* ItemInputMappingContext;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "ItemTag"))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FPlayerAbilitySet> ItemAbilities;
+};
+
+UENUM(BlueprintType)
+enum class ENPCSense : uint8
+{
+	Default       UMETA(DisplayName = "Default"),
+	SightSense    UMETA(DisplayName = "Sight"),
+	HearingSence  UMETA(DisplayName = "Hearing"),
+	DamageSense    UMETA(DisplayName = "Damaging")
+};
+
+UENUM(BlueprintType)
+enum class ENPCState : uint8
+{
+	Passive UMETA(DisplayName = "Passive"),
+	Attack UMETA(DisplayName = "Attack"),
+	Investigate UMETA(DisplayName = "Investigate"),
+	Staggered UMETA(DisplayName = "Staggered"),
+	Dead UMETA(DisplayName = "Dead")
 };

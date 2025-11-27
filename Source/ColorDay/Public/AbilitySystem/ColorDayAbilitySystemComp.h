@@ -21,9 +21,12 @@ public:
 	void OnAbilityInputReleased(const FGameplayTag& InputTag);
 
 	UFUNCTION(BlueprintCallable, Category = "ColorDay|Ability", meta = (ApplyLevel = "1"))
-	void GrantPlayerWeaponAbilities(const TArray< FPlayerAbilitySet>& Abilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& GrantedAbilitySpecHandles);
+	void GrantAdditionalAbilities(const TArray< FPlayerAbilitySet>& Abilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& GrantedAbilitySpecHandles);
 
 	UFUNCTION(BlueprintCallable, Category = "ColorDay|Ability")
 	void RemovePlayerWeaponAbilities(UPARAM(ref)TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandlesToRemove);
+
+	UFUNCTION(BlueprintCallable, Category = "ColorDay|Ability")
+	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate);
 
 };

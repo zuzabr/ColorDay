@@ -25,8 +25,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* StaticMeshComponent;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Components")
-	UMaterialInstanceDynamic* DynamicMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = " Painting Config")
+	UMaterialInstanceDynamic* PaintMaterialDynamic;
+
+	// This not used for now
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = " Painting Config")
+	UMaterialInterface* PaintMaterialBase;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = " Painting Config")
+	UTextureRenderTarget2D* RT_Mask;
+
+
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	void GrantAbilities(int32 ApplyLevel = 1);
@@ -44,7 +53,8 @@ protected:
 
 
 	virtual void TryToInteractWithItem(const FGameplayTag& ColorTag) const override;
-	virtual void TryToHitItem(const FGameplayTag& ColorTag) const override;
+	virtual void TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage = 0.f) const override;
+	//virtual void PaintTheTarget(FVector2D UVHit, UMaterialInstanceDynamic* BrushDynamic, FLinearColor PaintColor = FLinearColor::Red, float PaintRadius = 10.f) const override;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ColorAbilitySystem")

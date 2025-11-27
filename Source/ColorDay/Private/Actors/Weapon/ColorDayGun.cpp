@@ -10,6 +10,12 @@
 #include "Animation/AnimInstance.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "ColorDayFunctionLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "ColorDayDebugHelper.h"
+#include "DrawDebugHelpers.h"
+#include "Components/DecalComponent.h"
+
 
 AColorDayGun::AColorDayGun()
 {
@@ -19,8 +25,45 @@ AColorDayGun::AColorDayGun()
 
 void AColorDayGun::BeginPlay()
 {
+	Super::BeginPlay();
 	Character = Cast<AColorDayCharacter>(GetOwner());
+
+	
 }
+
+
+
+FAmmoType AColorDayGun::GetCurrentAmmoType()
+{
+	
+	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
+	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
+
+	if (Projectile)
+	{
+		Projectile->GetProjectileGameplayTag();
+	}
+
+	return AmmoTypes[CurrentAmmoIndex];
+
+	
+}
+
+FGameplayTag AColorDayGun::GetCurrentAmmoColorTag()
+{
+	
+	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
+	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
+
+	if (Projectile)
+	{
+		return Projectile->GetProjectileGameplayTag();
+	}
+
+	return FGameplayTag();
+	
+}
+
 
 void AColorDayGun::AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& SpecHandles)
 {
@@ -32,18 +75,18 @@ TArray<FGameplayAbilitySpecHandle> AColorDayGun::GetGrantedAbilitySpecHandles() 
 	return GrantedAbilitySpecHandles;
 }
 
-void AColorDayGun::Fire()
+void AColorDayGun::Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle)
 {
 	if (!Character || Character->GetController() == nullptr) return;
 
 	const FAmmoType& CurrentAmmo = AmmoTypes[CurrentAmmoIndex];
 	const auto CurAmmoClass = CurrentAmmo.ProjectileClass;
 
-	// Try and fire a projectile
 	if (!CurAmmoClass || !GetWorld()) return;
 	UWorld* const World = GetWorld();
 
 
+	//************************************Spawn Projectile*************************************************
 	AColorDayPlayerController* PlayerController = Cast<AColorDayPlayerController>(Character->GetController());
 	const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
 	// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
@@ -54,7 +97,13 @@ void AColorDayGun::Fire()
 	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 	// Spawn the projectile at the muzzle
-	World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	auto SpawnedProjectile = World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	if (SpawnedProjectile)
+	{
+		SpawnedProjectile->SetOwner(GetOwner());
+		SpawnedProjectile->ProjectileDamageEffectSpecHandle = ProjectileDamageEffectSpecHandle;
+	}
+
 
 	// Try and play the sound if specified
 	const auto CurFireSound = CurrentAmmo.FireSound;
@@ -74,13 +123,31 @@ void AColorDayGun::Fire()
 			AnimInstance->Montage_Play(CurFireAnim, 1.f);
 		}
 	}
+	
 }
+
+
+
+
 
 void AColorDayGun::SwitchAmmoType()
 {
+ 	
 	if (AmmoTypes.IsEmpty()) return;
+	
+		CurrentAmmoIndex = CurrentAmmoIndex + 1;
 
-	CurrentAmmoIndex = (CurrentAmmoIndex + 1) % AmmoTypes.Num();
+		if (CurrentAmmoIndex == AmmoTypes.Num())
+		{
+			CurrentAmmoIndex = 0;
+		}
+		else if (CurrentAmmoIndex == -1)
+		{
+			CurrentAmmoIndex = AmmoTypes.Num() - 1;
+		}
+
 }
+
+
 
 

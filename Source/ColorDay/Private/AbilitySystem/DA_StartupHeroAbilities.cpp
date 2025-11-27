@@ -12,18 +12,6 @@ void UDA_StartupHeroAbilities::GiveToAbilitySystemComponent(UColorDayAbilitySyst
 	GrantAbilities(ActivateOnGivenAbilities, InASC, ApplyLevel);
 	GrantAbilities(ReactiveAbilities, InASC, ApplyLevel);
 
-	for (const FPlayerAbilitySet& AbilitySet : PlayerStartAbilitySets)
-	{
-		if (!AbilitySet.IsValid()) continue;
-
-		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
-		AbilitySpec.SourceObject = InASC->GetAvatarActor();
-		AbilitySpec.Level = ApplyLevel;
-		AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
-
-		InASC->GiveAbility(AbilitySpec);
-	}
-
 	if (!StartUpGameplayEffects.IsEmpty())
 	{
 		for (const TSubclassOf<UGameplayEffect>& EffectClass : StartUpGameplayEffects)

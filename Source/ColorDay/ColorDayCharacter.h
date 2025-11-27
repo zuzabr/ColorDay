@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Character/ColorCharacterBase.h"
 #include "Logging/LogMacros.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayTagContainer.h"
+#include "Actors/ColorInteractionInterface.h"
 #include "ColorDayCharacter.generated.h"
 
 class UInputComponent;
@@ -20,16 +22,16 @@ struct FInputActionValue;
 
 class UColorDayAbilitySystemComp;
 class UColorDayAttributeSet;
-class UDA_StartupHeroAbilities;
+class UDA_PlayerAbilities;
 
-class UCombatComponent;
+class UPlayerCombatComponent;
 class UPhysicsHandleComponent;
 
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
+class AColorDayCharacter : public AColorCharacterBase, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -45,6 +47,9 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
 	UPhysicsHandleComponent* PhysicsHandle;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Components, meta = (AllowPrivateAccess = "true"))
+	UPlayerCombatComponent* CombatComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	float DefaultSpeed=400.0f;
 
@@ -55,18 +60,17 @@ class AColorDayCharacter : public ACharacter, public IAbilitySystemInterface
 public:
 	AColorDayCharacter();
 
-	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 	
 	FORCEINLINE UColorDayAbilitySystemComp* GetColorDayAbilitySystemComp() const {return ColorDayAbilitySystemComp;}
 	FORCEINLINE UColorDayAttributeSet* GetColorDayAttributeSet() const { return ColorDayAttributeSet; }
-	FORCEINLINE UCombatComponent* GetCombatComponent() const { return CombatComponent; }
+	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() const { return CombatComponent; }
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 protected:
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
@@ -98,19 +102,14 @@ protected:
 	UColorDayAttributeSet* ColorDayAttributeSet;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilitySystem")
-	TSoftObjectPtr<UDA_StartupHeroAbilities> StartupAbilities;
+	TSoftObjectPtr<UDA_PlayerAbilities> StartupAbilities;
 
-	
 
-	
 
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = CharacterData, meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Combat, meta = (AllowPrivateAccess = "true"))
-	UCombatComponent* CombatComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float InteractionRange = 500.0f;
@@ -124,7 +123,6 @@ private:
 
 	bool CanSprint();
 	void SetDefaulSpeed();
-
 
 
 };

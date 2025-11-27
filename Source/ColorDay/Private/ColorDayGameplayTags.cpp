@@ -18,6 +18,7 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip, "InputTag.Unequip");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_Fire, "InputTag.Weapon.Fire");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_SwitchAmmo, "InputTag.Weapon.SwitchAmmo");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_SwitchShootingState, "InputTag.Weapon.SwitchShootingState");
 
 
 	/**Item Input Tags**/
@@ -29,9 +30,33 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip_Gun, "Player.Ability.Unequip.Gun");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_Fire, "Player.Ability.Weapon.Fire");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_SwitchAmmo, "Player.Ability.Weapon.SwitchAmmo");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_SwitchShootingState, "Player.Ability.Weapon.SwitchShootingState");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_PutDown, "Player.Ability.Item.PutDown");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Throw, "Player.Ability.Item.Throw");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Grab, "Player.Ability.Item.Grab");
+
+
+	/**Character Ability**/
+	UE_DEFINE_GAMEPLAY_TAG(Character_Ability_Death, "Character.Ability.Death");
+	UE_DEFINE_GAMEPLAY_TAG(Character_Status_Dead, "Character.Status.Dead");
+	UE_DEFINE_GAMEPLAY_TAG(Character_Damage, "Character.Damage");
+
+	/**NPC Ability**/
+	UE_DEFINE_GAMEPLAY_TAG(NPC_Ability_MeleeAttack, "NPC.Ability.MeleeAttack");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_Ability_RangeAttack, "NPC.Ability.RangeAttack");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_Ability_GotDamage, "NPC.Ability.GotDamage");
+
+	/**NPC States**/
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State, "NPC.State");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Passive, "NPC.State.Passive");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Passive_Patrol, "NPC.State.Passive.Patrol");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Passive_Hiding, "NPC.State.Passive.Hiding");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Investigate, "NPC.State.Investigate");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Dead, "NPC.State.Dead");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Staggered, "NPC.State.Staggered");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Attack, "NPC.State.Attack");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Attack_MeleeAttack, "NPC.State.Attack.MeleeAttack");
+	UE_DEFINE_GAMEPLAY_TAG(NPC_State_Attack_RangeAttack, "NPC.State.Attack.RangeAttack");
 
 	/**Weapon Tags**/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Gun, "Player.Weapon.Gun");
@@ -47,6 +72,7 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Grey, "Projectile.Grey");
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Green, "Projectile.Green");
 	UE_DEFINE_GAMEPLAY_TAG(Projectile_Blue, "Projectile.Blue");
+	UE_DEFINE_GAMEPLAY_TAG(Projectile_Yellow, "Projectile.Yellow");
 
 	/**Interactive Actor Ability*/
 	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Ability_Activate, "ColorActor.Ability.Activate");
@@ -66,9 +92,13 @@ namespace ColorDayGameplayTags
 	
 	/**Interactive Actor Instigators*/
 	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Instigator_Player, "ColorActor.Instigator.Player");
+	UE_DEFINE_GAMEPLAY_TAG(ColorActor_Instigator_NPC, "ColorActor.Instigator.NPC");
 
 	/**Process tags*/
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedUnequip, "Process.NeedUnequip");
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedEquipWeapon, "Process.NeedEquipWeapon");
 	UE_DEFINE_GAMEPLAY_TAG(Process_NeedEquipItem, "Process.NeedEquipItem");
+
+	/**Shared tags*/
+	UE_DEFINE_GAMEPLAY_TAG(Shared_Damage, "Shared.Damage");
 }
