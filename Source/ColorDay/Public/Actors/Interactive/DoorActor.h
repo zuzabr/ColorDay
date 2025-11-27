@@ -17,7 +17,7 @@ class COLORDAY_API ADoorActor : public AInteractiveActor
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ColorAbilitySystem|Abilities")
-	bool bInitiallyLocked = true;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ColorAbilitySystem|Abilities")
+	bool bInitiallyLocked = false;
 	
 };

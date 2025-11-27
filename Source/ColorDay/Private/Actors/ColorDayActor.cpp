@@ -6,7 +6,7 @@
 #include "Actors/ASC_ColorActor.h"
 #include "AbilitySystem/ColorDayAttributeSet.h"
 #include "ColorDayGameplayTags.h"
-
+#include "Kismet/KismetRenderingLibrary.h"
 
 #include "ColorDayDebugHelper.h"
 
@@ -68,14 +68,18 @@ void AColorDayActor::BeginPlay()
 
 	ASC_ColorActor->InitAbilityActorInfo(this, this);
 	GrantAbilities();
-	//ASC_ColorActor->HasMatchingGameplayTag(ActorHasPhysics.GetTagName())
+
+	PaintMaterialDynamic = StaticMeshComponent->CreateDynamicMaterialInstance(0, StaticMeshComponent->GetMaterial(0));
+	/*RT_Mask = UKismetRenderingLibrary::CreateRenderTarget2D(this, 1024, 1024, ETextureRenderTargetFormat::RTF_R8);
+	PaintMaterialDynamic->SetTextureParameterValue("PaintMask", RT_Mask);*/
+	
 	
 }
 
 void AColorDayActor::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	DynamicMaterial = StaticMeshComponent->CreateDynamicMaterialInstance(0, StaticMeshComponent->GetMaterial(0));
+	
 	
 }
 
@@ -91,6 +95,13 @@ void AColorDayActor::TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage
 {
 	Debug::Print(TEXT("Actor was tried to hit"));	
 }
+
+//void AColorDayActor::PaintTheTarget(FVector2D UVHit, UMaterialInstanceDynamic* BrushDynamic, FLinearColor PaintColor = FLinearColor::Red, float PaintRadius = 10.f) const
+//{
+//	StaticMeshComponent->SetMaterial(0, PaintMaterialDynamic);
+//	
+//	UKismetRenderingLibrary::DrawMaterialToRenderTarget(GetWorld(), RT_Mask, BrushDynamic);
+//}
 
 
 

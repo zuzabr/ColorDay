@@ -10,6 +10,12 @@
 #include "Animation/AnimInstance.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "ColorDayFunctionLibrary.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "ColorDayDebugHelper.h"
+#include "DrawDebugHelpers.h"
+#include "Components/DecalComponent.h"
+
 
 AColorDayGun::AColorDayGun()
 {
@@ -21,10 +27,15 @@ void AColorDayGun::BeginPlay()
 {
 	Super::BeginPlay();
 	Character = Cast<AColorDayCharacter>(GetOwner());
+
+	
 }
+
+
 
 FAmmoType AColorDayGun::GetCurrentAmmoType()
 {
+	
 	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
 	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
 
@@ -34,10 +45,13 @@ FAmmoType AColorDayGun::GetCurrentAmmoType()
 	}
 
 	return AmmoTypes[CurrentAmmoIndex];
+
+	
 }
 
 FGameplayTag AColorDayGun::GetCurrentAmmoColorTag()
 {
+	
 	auto AmmoType = AmmoTypes[CurrentAmmoIndex];
 	auto Projectile = AmmoType.ProjectileClass.GetDefaultObject();
 
@@ -45,9 +59,11 @@ FGameplayTag AColorDayGun::GetCurrentAmmoColorTag()
 	{
 		return Projectile->GetProjectileGameplayTag();
 	}
-	
+
 	return FGameplayTag();
+	
 }
+
 
 void AColorDayGun::AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& SpecHandles)
 {
@@ -66,7 +82,6 @@ void AColorDayGun::Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHand
 	const FAmmoType& CurrentAmmo = AmmoTypes[CurrentAmmoIndex];
 	const auto CurAmmoClass = CurrentAmmo.ProjectileClass;
 
-	// Try and fire a projectile
 	if (!CurAmmoClass || !GetWorld()) return;
 	UWorld* const World = GetWorld();
 
@@ -83,12 +98,12 @@ void AColorDayGun::Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHand
 
 	// Spawn the projectile at the muzzle
 	auto SpawnedProjectile = World->SpawnActor<AColorDayProjectile>(CurAmmoClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-	if(SpawnedProjectile) 
-	{ 
+	if (SpawnedProjectile)
+	{
 		SpawnedProjectile->SetOwner(GetOwner());
 		SpawnedProjectile->ProjectileDamageEffectSpecHandle = ProjectileDamageEffectSpecHandle;
 	}
-	
+
 
 	// Try and play the sound if specified
 	const auto CurFireSound = CurrentAmmo.FireSound;
@@ -108,16 +123,31 @@ void AColorDayGun::Fire(FGameplayEffectSpecHandle ProjectileDamageEffectSpecHand
 			AnimInstance->Montage_Play(CurFireAnim, 1.f);
 		}
 	}
+	
 }
+
+
 
 
 
 void AColorDayGun::SwitchAmmoType()
 {
+ 	
 	if (AmmoTypes.IsEmpty()) return;
+	
+		CurrentAmmoIndex = CurrentAmmoIndex + 1;
 
-	CurrentAmmoIndex = (CurrentAmmoIndex + 1) % AmmoTypes.Num();
+		if (CurrentAmmoIndex == AmmoTypes.Num())
+		{
+			CurrentAmmoIndex = 0;
+		}
+		else if (CurrentAmmoIndex == -1)
+		{
+			CurrentAmmoIndex = AmmoTypes.Num() - 1;
+		}
 
 }
+
+
 
 

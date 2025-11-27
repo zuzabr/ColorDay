@@ -13,12 +13,14 @@
 #include "Actors/ColorDayActor.h"
 #include "ColorDayFunctionLibrary.h"
 #include "AbilitySystemBlueprintLibrary.h"
-
+#include "Materials/MaterialInstanceDynamic.h"
 
 #include "ColorDayDebugHelper.h"
 
 AColorDayProjectile::AColorDayProjectile()
 {
+	
+		
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(2.0f);
@@ -85,7 +87,7 @@ void AColorDayProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 	if (auto InteractionInterface = Cast<IColorInteractionInterface>(HitActor))
 	{
 		InteractionInterface->TryToHitItem(ProjectileInfo.AmmoTag);
-		HandleApplyProjectileDamage(HitActor);
+		HandleApplyProjectileDamage(HitActor);	
 	}
 
 	//*********************************** Add impulse if we hit a physics**************************************************			
@@ -110,6 +112,7 @@ FGameplayTag AColorDayProjectile::GetProjectileGameplayTag()
 	return ProjectileInfo.AmmoTag;
 }
 
+
 void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 {
 	/*const auto ActorToSpawn = ProjectileInfo.ActorToSpawn;
@@ -128,6 +131,7 @@ void AColorDayProjectile::SpawnColorActor(const FHitResult& Hit)
 	GetWorld()->SpawnActor<AColorDayActor>(ActorToSpawn, ActorSpawnTransform, ActorSpawnParams);*/
 	
 }
+
 
 void AColorDayProjectile::HandleApplyProjectileDamage(AActor* HitActor)
 {

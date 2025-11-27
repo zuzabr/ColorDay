@@ -55,6 +55,9 @@ struct FProjectileInfo
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FScalableFloat ColorBaseDamage;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FLinearColor Color;
+
 	// Niagara System for paint splatter
 	UPROPERTY(EditAnywhere)
 	UNiagaraSystem* PaintSplatterEffect;
@@ -66,6 +69,17 @@ struct FProjectileInfo
 	// Size of the decal
 	UPROPERTY(EditAnywhere)
 	FVector DecalSize = FVector(40.f, 40.f, 40.f);
+
+	/** Sound to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* FireSound;
+
+	/** AnimMontage to play each time we fire */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* FireAnimation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 MaxAmmo;
 
 
 };
@@ -98,6 +112,15 @@ struct FWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty ="InputTag"))
 	TArray<FPlayerAbilitySet> DefaultWeaponAbilities;
+};
+
+// Shoot with projectile or trace
+UENUM(BlueprintType)
+enum class EShootingState : uint8
+{
+	Projectile       UMETA(DisplayName = "Projectile"),
+	Trace            UMETA(DisplayName = "Trace")
+	
 };
 
 

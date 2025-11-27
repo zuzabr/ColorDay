@@ -20,6 +20,7 @@ namespace ColorDayGameplayTags
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Unequip);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Weapon_Fire);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Weapon_SwitchAmmo);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Weapon_SwitchShootingState);
 
 
 	/**Item Input Tags**/
@@ -31,6 +32,7 @@ namespace ColorDayGameplayTags
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Gun);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Weapon_Fire);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Weapon_SwitchAmmo);
+	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Weapon_SwitchShootingState);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Item_PutDown);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Item_Throw);
 	COLORDAY_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Item_Grab);

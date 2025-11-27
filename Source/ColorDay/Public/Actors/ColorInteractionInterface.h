@@ -25,4 +25,5 @@ class COLORDAY_API IColorInteractionInterface
 public:
 	virtual void TryToInteractWithItem(const FGameplayTag& ColorTag) const = 0;
 	virtual void TryToHitItem(const FGameplayTag& ColorTag, float BaseDamage = 0.f) const = 0;
+	//virtual void PaintTheTarget(FVector2D UVHit, UMaterialInstanceDynamic* BrushDynamic, FLinearColor PaintColor = FLinearColor::Red, float PaintRadius = 10.f) const = 0;
 };

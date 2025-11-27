@@ -14,7 +14,9 @@ public class ColorDay : ModuleRules
             "EnhancedInput",
             "Niagara",
         "GameplayTags",
-        "GameplayTasks"});
+        "GameplayTasks",
+        "OnlineSybsystem",
+        "OnlineSybsystemSteam"});
 
         PublicIncludePaths.AddRange(new string[]
         {

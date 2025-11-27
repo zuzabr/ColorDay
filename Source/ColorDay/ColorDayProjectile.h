@@ -29,7 +29,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ProjectileInfo)
 	FProjectileInfo ProjectileInfo;
-	
+		
 
 public:
 	AColorDayProjectile();
@@ -50,7 +50,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = ProjectileInfo, meta = (ExposeOnSpawn = "true"))
 	FGameplayEffectSpecHandle ProjectileDamageEffectSpecHandle;
 
+protected:
 	void SpawnColorActor(const FHitResult& Hit);
+
 
 private:
 	void HandleApplyProjectileDamage(AActor* HitActor);

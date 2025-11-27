@@ -18,6 +18,7 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Unequip, "InputTag.Unequip");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_Fire, "InputTag.Weapon.Fire");
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_SwitchAmmo, "InputTag.Weapon.SwitchAmmo");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Weapon_SwitchShootingState, "InputTag.Weapon.SwitchShootingState");
 
 
 	/**Item Input Tags**/
@@ -29,6 +30,7 @@ namespace ColorDayGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip_Gun, "Player.Ability.Unequip.Gun");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_Fire, "Player.Ability.Weapon.Fire");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_SwitchAmmo, "Player.Ability.Weapon.SwitchAmmo");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Weapon_SwitchShootingState, "Player.Ability.Weapon.SwitchShootingState");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_PutDown, "Player.Ability.Item.PutDown");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Throw, "Player.Ability.Item.Throw");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Item_Grab, "Player.Ability.Item.Grab");
@@ -58,7 +60,7 @@ namespace ColorDayGameplayTags
 
 	/**Weapon Tags**/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Gun, "Player.Weapon.Gun");
-	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Item, "PlayerPlayer.Weapon.Item");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Weapon_Item, "Player.Weapon.Item");
 
 	/**Player Event Tags**/
 	UE_DEFINE_GAMEPLAY_TAG(Player_Event_Equip_Gun, "Player.Event.Equip.Gun");
