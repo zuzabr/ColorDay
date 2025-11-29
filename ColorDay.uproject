@@ -35,6 +35,11 @@
 		{
 			"Name": "OnlineSubsystemSteam",
 			"Enabled": true
+		},
+
+		{
+			"Name": "OnlineSubsystem",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [

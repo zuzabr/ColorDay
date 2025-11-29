@@ -8,22 +8,32 @@ public class ColorDay : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core",
-            "CoreUObject", "Engine",
+		PublicDependencyModuleNames.AddRange(new string[] { 
+            "Core",
+            "CoreUObject", 
+            "Engine",
             "InputCore",
             "EnhancedInput",
             "Niagara",
-        "GameplayTags",
-        "GameplayTasks",
-        "OnlineSybsystem",
-        "OnlineSybsystemSteam"});
-
-        PublicIncludePaths.AddRange(new string[]
-        {
-        //    "Shooter/Public/Weapon/Effects",
-			"C:/Program Files/Epic Games/UE_5.5/Engine/Plugins/FX/Niagara/Source/Niagara/Public"
-
+            "GameplayTags",
+            "GameplayTasks",
+            "OnlineSubsystem",
+   
+            "AIModule",
+            //"StateTreeModule",
+            //"GameplayStateTreeModule",
+            "UMG",
+            "Slate"
         });
+
+        PrivateDependencyModuleNames.AddRange(new string[]{ });
+
+        PublicIncludePaths.AddRange(new string[] {
+            "ColorDay",
+            "ColorDay/Private",
+            "ColorDay/Public"
+        });
+
     }
 
     

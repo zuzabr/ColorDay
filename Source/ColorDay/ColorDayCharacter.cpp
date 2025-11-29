@@ -203,7 +203,7 @@ void AColorDayCharacter::Sprint(const FInputActionValue& Value)
 {
 	if (CanSprint() && GetCharacterMovement())
 	{
-		UE_LOG(LogTemplateCharacter, Warning, TEXT("Sprinting"));
+		
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 	}
 }
